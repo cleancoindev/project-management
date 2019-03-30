@@ -6,6 +6,7 @@ import Hero from "./components/Hero/index.js";
 import Web3Info from "./components/Web3Info/index.js";
 import CounterUI from "./components/Counter/index.js";
 import Wallet from "./components/Wallet/index.js";
+import Project from "./components/Project/index.js";  // Load Project components
 import Instructions from "./components/Instructions/index.js";
 import { Loader } from 'rimble-ui';
 
@@ -270,6 +271,45 @@ class App extends Component {
     );
   }
 
+  renderProject() {
+    const { hotLoaderDisabled, networkType, accounts, ganacheAccounts } = this.state;
+    const updgradeCommand = (networkType === 'private' && !hotLoaderDisabled) ? "upgrade-auto" : "upgrade";
+    return (
+      <div className={styles.wrapper}>
+        {!this.state.web3 && this.renderLoader()}
+        {this.state.web3 && !this.state.contract && (
+          this.renderDeployCheck('counter')
+        )}
+        {this.state.web3 && this.state.contract && (
+          <div className={styles.contracts}>
+            <h1>Counter Contract is good to Go!</h1>
+            <p>Interact with your contract on the right.</p>
+            <p> You can see your account onfo on the left </p>
+            <div className={styles.widgets}>
+              <Web3Info {...this.state} />
+              <CounterUI
+                decrease={this.decreaseCount}
+                increase={this.increaseCount}
+                {...this.state} />
+            </div>
+            {this.state.balance < 0.1 && (
+              <Instructions
+                ganacheAccounts={ganacheAccounts}
+                name="metamask"
+                accounts={accounts} />
+            )}
+            {this.state.balance >= 0.1 && (
+              <Instructions
+                ganacheAccounts={this.state.ganacheAccounts}
+                name={updgradeCommand}
+                accounts={accounts} />
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className={styles.App}>
@@ -277,7 +317,8 @@ class App extends Component {
           {this.state.route === '' && this.renderInstructions()}
           {this.state.route === 'counter' && this.renderBody()}
           {this.state.route === 'evm' && this.renderEVM()}
-          {this.state.route === 'faq' && this.renderFAQ()}
+          {/* {this.state.route === 'faq' && this.renderFAQ()} */}
+          {this.state.route === 'project' && this.renderProject()}
         <Footer />
       </div>
     );
