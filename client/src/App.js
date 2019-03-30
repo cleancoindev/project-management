@@ -71,6 +71,7 @@ class App extends Component {
               Counter.abi,
               deployedNetwork && deployedNetwork.address,
             );
+            console.log(instance);
           }
         }
         if (Wallet.networks) {
