@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-blank": "rm -rf client/src && cp -rf barebones/src client/"
+    "start-blank": "rm -rf client/src && cp -rf barebones/src client/",
+    "start:app": "cd client && npm run start"
   },
   "repository": {
     "type": "git",
