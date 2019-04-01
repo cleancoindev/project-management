@@ -5,8 +5,8 @@ contract('Widgets', (accounts) => {
         const accounts = await web3.eth.getAccounts();
 
         // Debug
-        console.log('=== accounts ===', accounts);
-        console.log('=== accounts[0] ===', accounts[0]);
+        //console.log('=== accounts ===', accounts);
+        //console.log('=== accounts[0] ===', accounts[0]);
     })
 
 
@@ -15,7 +15,7 @@ contract('Widgets', (accounts) => {
         response = await contract.methods.getWidgetsLength().call();
 
         // Debug
-        console.log('=== response of getWidgetsLength function ===', response);  // Result: OK
+        //console.log('=== response of getWidgetsLength function ===', response);  // Result: OK
     })
 
 
@@ -24,7 +24,7 @@ contract('Widgets', (accounts) => {
         response = await contract.methods.getWidget(0).call();
 
         // Debug
-        console.log('=== response of getWidget function ===', response);  // Result: OK
+        //console.log('=== response of getWidget function ===', response);  // Result: OK
     })
 
 
@@ -41,7 +41,7 @@ contract('Widgets', (accounts) => {
         //response = await contract.methods.addWidget(_addr).send({ from: accounts[0] });
 
         // Debug
-        console.log('=== response of addWidget function ===', response);  // Result: OK
+        //console.log('=== response of addWidget function ===', response);  // Result: OK
     })
 
 })
