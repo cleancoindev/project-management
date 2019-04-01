@@ -7,9 +7,9 @@ contract Propose is Initializable {
 
     struct Proposal {
         // uint256 proposerId;
-        // address proposerAddress;  // address of person who propose
-        string name;      // name of person who propose
-        string content;   // content of proposal
+        string proposerName;      // name of person who propose
+        address proposerAddress;  // address of person who propose
+        //string content;   // content of proposal
     }
     //mapping (address => Proposal) proposal;  // e.g) proposal[addres].name
     Proposal[] public proposals;  // e.g) proposal[index].name
@@ -50,16 +50,16 @@ contract Propose is Initializable {
     /* @notice Create new proposal */ 
     function createProposal(
         // uint256 _proposerId,
-        // address _proposerAddress,
-        string memory _name, 
-        string memory _content
-    ) public returns (string memory, string memory) 
+        string memory _proposerName,
+        address _proposerAddress
+        //string memory _content
+    ) public returns (string memory, address) 
     {
         Proposal memory proposal = Proposal({
             // proposerId: _proposerId,
-            // proposerAddress: _proposerAddress,
-            name: _name,
-            content: _content
+            proposerName: _proposerName,
+            proposerAddress: _proposerAddress
+            //content: _content
         });
 
         proposals.push(proposal);
@@ -72,12 +72,16 @@ contract Propose is Initializable {
 
         //emit CreateProposal(_proposerId, _proposerAddress, _name, _content);
 
-        return (_name, _content);
+        return (_proposerName, _proposerAddress);
     }
 
 
     /* @notice createContace */ 
-    function createContact(string memory _contactName, address _contactAddress) public returns (string memory, address) {
+    function createContact(
+        string memory _contactName, 
+        address _contactAddress
+    ) public returns (string memory, address) 
+    {
         Contact memory contact = Contact({
             contactName: _contactName,
             contactAddress: _contactAddress
