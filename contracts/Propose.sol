@@ -64,16 +64,22 @@ contract Propose is Initializable {
 
         proposals.push(proposal);
 
-        // Proposal storage proposal = proposals[_proposerId];
-        // proposal.proposerId = _proposerId;
-        // proposal.proposerAddress = _proposerAddress;
-        // proposal.name = _name;
-        // proposal.content = _content;
-
         //emit CreateProposal(_proposerId, _proposerAddress, _name, _content);
 
         return (_proposerName, _proposerAddress);
     }
+
+
+    /* @notice Save new proposal */ 
+    function saveProposal(uint256 _proposerId) public returns (bool success) {
+        Proposal storage proposal = proposals[_proposerId];
+        //proposal.proposerId = _proposerId;
+        proposal.proposerName = proposals[_proposerId].proposerName;
+        proposal.proposerAddress = proposals[_proposerId].proposerAddress;
+        //proposal.content = _content;
+        return true;
+    }
+
 
 
     /* @notice createContace */ 

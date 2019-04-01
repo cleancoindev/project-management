@@ -36,7 +36,7 @@ contract('Propose', (accounts) => {
 
 
 
-
+    // Successful
     //proposerId = '10000'
     proposerName = "Taro Suzuki"
     proposerAddress = "0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b"
@@ -52,5 +52,4 @@ contract('Propose', (accounts) => {
         // Debug
         console.log('=== response of createProposal function ===', response);  // Result: OK
     })
-
 })
