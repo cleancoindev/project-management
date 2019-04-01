@@ -6,13 +6,21 @@ import "zos-lib/contracts/Initializable.sol";
 contract Propose is Initializable {
 
     struct Proposal {
-        uint256 proposerId;
-        address proposerAddress;  // address of person who propose
+        // uint256 proposerId;
+        // address proposerAddress;  // address of person who propose
         string name;      // name of person who propose
         string content;   // content of proposal
     }
     //mapping (address => Proposal) proposal;  // e.g) proposal[addres].name
     Proposal[] public proposals;  // e.g) proposal[index].name
+
+
+
+    struct Contact {
+        string contactName;
+        address contactAddress;
+    }
+    Contact[] public contacts;
 
 
 
@@ -41,30 +49,44 @@ contract Propose is Initializable {
 
     /* @notice Create new proposal */ 
     function createProposal(
-        uint256 _proposerId,
-        address _proposerAddress,
+        // uint256 _proposerId,
+        // address _proposerAddress,
         string memory _name, 
         string memory _content
-    ) public returns (bool) 
+    ) public returns (string memory, string memory) 
     {
-        // Propose storage proposal = proposal.push(Propose({
-        //     proposerAddress: _proposerAddress,
-        //     name: _name,
-        //     content: _content
-        // }));
-        
-        Proposal storage proposal = proposals[_proposerId];
-        proposal.proposerId = _proposerId;
-        proposal.proposerAddress = _proposerAddress;
-        proposal.name = _name;
-        proposal.content = _content;
+        Proposal memory proposal = Proposal({
+            // proposerId: _proposerId,
+            // proposerAddress: _proposerAddress,
+            name: _name,
+            content: _content
+        });
 
-        //proposals.push(proposal);
+        proposals.push(proposal);
+
+        // Proposal storage proposal = proposals[_proposerId];
+        // proposal.proposerId = _proposerId;
+        // proposal.proposerAddress = _proposerAddress;
+        // proposal.name = _name;
+        // proposal.content = _content;
 
         //emit CreateProposal(_proposerId, _proposerAddress, _name, _content);
 
-        return true;
+        return (_name, _content);
     }
+
+
+    /* @notice createContace */ 
+    function createContact(string memory _contactName, address _contactAddress) public returns (string memory, address) {
+        Contact memory contact = Contact({
+            contactName: _contactName,
+            contactAddress: _contactAddress
+        });
+        contacts.push(contact);
+
+        return (_contactName, _contactAddress);
+    }
+
 
 
     /* @notice Get number of total proposal */
