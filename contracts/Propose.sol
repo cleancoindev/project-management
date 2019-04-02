@@ -9,15 +9,17 @@ contract Propose is Initializable {
         //uint256 proposerId;
         string proposerName;      // name of person who propose
         address proposerAddress;  // address of person who propose
+        //string proposalTitle;
+        //string proposalContent;
         //mapping (address => Proposal[]) proposal;
     }
     Proposer[] public proposers;  // e.g) proposers[index].proposerName
 
 
-    struct Proposal {
-        string proposalTitle;
-        string proposalContent;
-    }
+    // struct Proposal {
+    //     string proposalTitle;
+    //     string proposalContent;
+    // }
     //Proposal[] public proposals;  // e.g) proposal[index].name
 
 
@@ -48,19 +50,22 @@ contract Propose is Initializable {
         //uint256 _proposerId,
         string memory _proposerName,
         address _proposerAddress
-        //string memory _content
+        //string memory _proposalTitle,
+        //string memory _proposalContent
     ) public returns (string memory, address) 
     {
         Proposer memory proposer = Proposer({
             //proposerId: _proposerId,
             proposerName: _proposerName,
             proposerAddress: _proposerAddress
-            //content: _content
+            //proposalTitle: _proposalTitle,
+            //proposalContent: _proposalContent
         });
         proposers.push(proposer);
 
         //emit CreateProposer(_proposerId, _proposerAddress, _name, _content);
 
+        //return (_proposerName, _proposerAddress, _proposalTitle, _proposalContent);
         return (_proposerName, _proposerAddress);
     }
 
@@ -77,7 +82,9 @@ contract Propose is Initializable {
         //proposer.proposerId = _proposerId;
         proposer.proposerName = proposers[_proposerId].proposerName;
         proposer.proposerAddress = proposers[_proposerId].proposerAddress;
-        //proposer.content = _content;
+        //proposer.proposalTitle = proposers[_proposerId].proposalTitle;
+        //proposer.proposalContent = proposers[_proposerId].proposalContent;
+
         return true;
     }
 

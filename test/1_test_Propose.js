@@ -23,12 +23,14 @@ contract('Propose', (accounts) => {
     //proposerId = 0
     proposerName = "Taro Suzuki"
     proposerAddress = "0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b"
-    //content = "This is test for createProposal contract"
+    proposalTitle = "This is proposalTitle"
+    proposalContent = "This is proposalContent"
 
     it('Execute createProposer function', async (_proposerName=proposerName, _proposerAddress=proposerAddress) => {
         const accounts = await web3.eth.getAccounts();
 
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
+        //response = await contract.methods.createProposer(proposerName, proposerAddress, proposalTitle, proposalContent).send({ from: accounts[0] });
         response = await contract.methods.createProposer(proposerName, proposerAddress).send({ from: accounts[0] });
 
         // Debug
@@ -39,10 +41,14 @@ contract('Propose', (accounts) => {
     // Successful
     proposerName = "Taro Suzuki"
     proposerAddress = "0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b"
+    proposalTitle = "This is proposalTitle"
+    proposalContent = "This is proposalContent"
+
     it('Execute saveProposer function', async (_proposerName=proposerName, _proposerAddress=proposerAddress) => {
         const accounts = await web3.eth.getAccounts();
 
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
+        //response_1 = await contract.methods.createProposer(proposerName, proposerAddress, proposalTitle, proposalContent).send({ from: accounts[0] });
         response_1 = await contract.methods.createProposer(proposerName, proposerAddress).send({ from: accounts[0] });
 
         //proposerId = 0
