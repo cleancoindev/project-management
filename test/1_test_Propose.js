@@ -64,8 +64,8 @@ contract('Propose', (accounts) => {
         response_1 = await contract.methods.createProposal(proposerName, proposerAddress).send({ from: accounts[0] });
 
         //proposerId = 0
-        proposerId = await contract.methods.getProposerlId().call();
-        console.log('=== response of getProposerId function ===', proposerId);  // Result: OK
+        proposerId = await contract.methods.getProposalId().call();
+        console.log('=== response of getProposalId function ===', proposerId);  // Result: OK
         
         response_2 = await contract.methods.saveProposal(proposerId).send({ from: accounts[0] });
         console.log('=== response of saveProposal function ===', response_2);  // Result: OK
