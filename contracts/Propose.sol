@@ -5,8 +5,10 @@ import "zos-lib/contracts/Initializable.sol";
 
 contract Propose is Initializable {
 
+    //uint256 proposerId;
+
     struct Proposal {
-        // uint256 proposerId;
+        //uint256 proposerId;
         string proposerName;      // name of person who propose
         address proposerAddress;  // address of person who propose
         //string content;   // content of proposal
@@ -14,15 +16,11 @@ contract Propose is Initializable {
     //mapping (address => Proposal) proposal;  // e.g) proposal[addres].name
     Proposal[] public proposals;  // e.g) proposal[index].name
 
-
-
     struct Contact {
         string contactName;
         address contactAddress;
     }
     Contact[] public contacts;
-
-
 
     // event CreateProposal(
     //     uint256 indexed _proposerId, 
@@ -31,8 +29,6 @@ contract Propose is Initializable {
     //     string indexed _content
     // );
     
-    
-
     //it keeps a count to demonstrate stage changes
     uint private countPropose;
     address private _owner;
@@ -49,14 +45,18 @@ contract Propose is Initializable {
 
     /* @notice Create new proposal */ 
     function createProposal(
-        // uint256 _proposerId,
+        //uint256 _proposerId,
         string memory _proposerName,
         address _proposerAddress
         //string memory _content
     ) public returns (string memory, address) 
     {
+        // Get new proposerId
+        //uint256 _proposerId;
+        //_proposerId = proposals.length;
+
         Proposal memory proposal = Proposal({
-            // proposerId: _proposerId,
+            //proposerId: _proposerId,
             proposerName: _proposerName,
             proposerAddress: _proposerAddress
             //content: _content
@@ -70,6 +70,12 @@ contract Propose is Initializable {
     }
 
 
+    /* @notice Get proposerId */ 
+    function getProposalId() public view returns (uint256 _proposerId) {
+        return proposals.length - 1;
+    }
+
+
     /* @notice Save new proposal */ 
     function saveProposal(uint256 _proposerId) public returns (bool success) {
         Proposal storage proposal = proposals[_proposerId];
@@ -80,6 +86,42 @@ contract Propose is Initializable {
         return true;
     }
 
+
+    
+
+
+
+    /* @notice New proposal */ 
+    // function newProposal(
+    //     // uint256 _proposerId,
+    //     string memory _proposerName,
+    //     address _proposerAddress
+    //     //string memory _content
+    // ) public returns (string memory, address) 
+    // {
+    //     Proposal memory proposal = Proposal({
+    //         // proposerId: _proposerId,
+    //         proposerName: _proposerName,
+    //         proposerAddress: _proposerAddress
+    //         //content: _content
+    //     });
+    //     proposals.push(proposal);
+
+    //     // Get new proposerId
+    //     proposerId = proposals.length - 1;
+
+    //     // Save new proposal
+    //     Proposal storage proposal = proposals[proposerId];
+    //     //proposal.proposerId = _proposerId;
+    //     proposal.proposerName = proposals[proposerId].proposerName;
+    //     proposal.proposerAddress = proposals[proposerId].proposerAddress;
+    //     //proposal.content = _content;
+
+    //     //emit CreateProposal(_proposerId, _proposerAddress, _name, _content);
+
+    //     return (_proposerName, _proposerAddress);
+    // }
+    
 
 
     /* @notice createContace */ 

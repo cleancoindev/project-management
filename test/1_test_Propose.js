@@ -37,7 +37,7 @@ contract('Propose', (accounts) => {
 
 
     // Successful
-    //proposerId = '10000'
+    //proposerId = 0
     proposerName = "Taro Suzuki"
     proposerAddress = "0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b"
     //content = "This is test for createProposal contract"
@@ -63,7 +63,10 @@ contract('Propose', (accounts) => {
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
         response_1 = await contract.methods.createProposal(proposerName, proposerAddress).send({ from: accounts[0] });
 
-        proposerId = 0
+        //proposerId = 0
+        proposerId = await contract.methods.getProposerlId().call();
+        console.log('=== response of getProposerId function ===', proposerId);  // Result: OK
+        
         response_2 = await contract.methods.saveProposal(proposerId).send({ from: accounts[0] });
         console.log('=== response of saveProposal function ===', response_2);  // Result: OK
     })
