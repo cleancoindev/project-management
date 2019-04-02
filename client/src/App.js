@@ -20,6 +20,7 @@ class App extends Component {
     web3: null,
     accounts: null,
     contract: null,
+    project: null,
     route: window.location.pathname.replace("/","")
   };
 
@@ -37,9 +38,11 @@ class App extends Component {
     const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
     let Counter = {};
     let Wallet = {};
+    let Project = {};
     try {
       Counter = require("../../contracts/Counter.sol");
       Wallet = require("../../contracts/Wallet.sol");
+      Project = require("../../contracts/Project.sol");
     } catch (e) {
       console.log(e);
     }
@@ -64,6 +67,7 @@ class App extends Component {
         balance = web3.utils.fromWei(balance, 'ether');
         let instance = null;
         let instanceWallet = null;
+        let instanceProject = null;
         let deployedNetwork = null;
         if (Counter.networks) {
           deployedNetwork = Counter.networks[networkId.toString()];
@@ -72,7 +76,7 @@ class App extends Component {
               Counter.abi,
               deployedNetwork && deployedNetwork.address,
             );
-            console.log(instance);
+            //console.log('=== instance ===', instance);
           }
         }
         if (Wallet.networks) {
@@ -84,14 +88,24 @@ class App extends Component {
             );
           }
         }
-        if (instance || instanceWallet) {
+        if (Project.networks) {
+          deployedNetwork = Wallet.networks[networkId.toString()];
+          if (deployedNetwork) {
+            instanceProject = new web3.eth.Contract(
+              Project.abi,
+              deployedNetwork && deployedNetwork.address,
+            );
+            console.log('=== instanceProject ===', instanceProject);
+          }
+        }
+        if (instance || instanceWallet || instanceProject) {
           // Set web3, accounts, and contract to the state, and then proceed with an
           // example of interacting with the contract's methods.
           this.setState({ web3, ganacheAccounts, accounts, balance, networkId, networkType, hotLoaderDisabled,
-            isMetaMask, contract: instance, wallet: instanceWallet }, () => {
-              this.refreshValues(instance, instanceWallet);
+            isMetaMask, contract: instance, wallet: instanceWallet, project: instanceProject }, () => {
+              this.refreshValues(instance, instanceWallet, instanceProject);
               setInterval(() => {
-                this.refreshValues(instance, instanceWallet);
+                this.refreshValues(instance, instanceWallet, instanceProject);
               }, 5000);
             });
         }
@@ -114,11 +128,14 @@ class App extends Component {
     }
   }
 
-  refreshValues = (instance, instanceWallet) => {
+  refreshValues = (instance, instanceWallet, instanceProject) => {
     if (instance) {
       this.getCount();
     }
     if (instanceWallet) {
+      this.updateTokenOwner();
+    }
+    if (instanceProject) {
       this.updateTokenOwner();
     }
   }
@@ -138,6 +155,21 @@ class App extends Component {
     // Update state with the result.
     this.setState({ tokenOwner: response.toString() === accounts[0].toString() });
   };
+
+  getNumberOfTotalProposer = async () => {
+    const { project } = this.state;
+    const response = 0;
+    
+    try {
+        const response = await project.methods.getNumberOfTotalProposer().call();
+    } catch {
+        console.log('null');
+    }
+    //const response = await project.methods.getNumberOfTotalProposer().call();
+
+    // Update state with the result.
+    this.setState({ project: response });
+  };  
 
   increaseCount = async (number) => {
     const { accounts, contract } = this.state;
@@ -276,34 +308,17 @@ class App extends Component {
     const updgradeCommand = (networkType === 'private' && !hotLoaderDisabled) ? "upgrade-auto" : "upgrade";
     return (
       <div className={styles.wrapper}>
-        {!this.state.web3 && this.renderLoader()}
-        {this.state.web3 && !this.state.contract && (
-          this.renderDeployCheck('counter')
-        )}
         {this.state.web3 && this.state.contract && (
           <div className={styles.contracts}>
-            <h1>Counter Contract is good to Go!</h1>
-            <p>Interact with your contract on the right.</p>
-            <p> You can see your account onfo on the left </p>
+            <h1>Project Contract is good to Go!</h1>
+            <p>test1</p>
+            <p>test2</p>
             <div className={styles.widgets}>
               <Web3Info {...this.state} />
-              <CounterUI
-                decrease={this.decreaseCount}
-                increase={this.increaseCount}
+              <Project
+                getNumberOfTotalProposer={this.getNumberOfTotalProposer}
                 {...this.state} />
             </div>
-            {this.state.balance < 0.1 && (
-              <Instructions
-                ganacheAccounts={ganacheAccounts}
-                name="metamask"
-                accounts={accounts} />
-            )}
-            {this.state.balance >= 0.1 && (
-              <Instructions
-                ganacheAccounts={this.state.ganacheAccounts}
-                name={updgradeCommand}
-                accounts={accounts} />
-            )}
           </div>
         )}
       </div>
