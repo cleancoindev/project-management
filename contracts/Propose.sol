@@ -115,10 +115,14 @@ contract Propose is Initializable {
     }
 
 
-
-
     /* @notice Get number of total proposer */
     function getNumberOfTotalProposer() public view returns (uint) {
         return proposers.length;
+    }
+
+
+        /* @notice Get number of total proposal */
+    function getNumberOfTotalProposal() public view returns (uint) {
+        return proposals.length;
     }
 }
