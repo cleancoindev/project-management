@@ -74,4 +74,18 @@ contract('Propose', (accounts) => {
         // Debug
         console.log('=== response of createProposal function ===', response);  // Result: OK
     })
+
+    // Success
+    it('Execute createProposal function and saveProposal function', async (_proposalTitle=proposalTitle, _proposalContent=proposalContent) => {
+        const accounts = await web3.eth.getAccounts();
+        const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
+        //const response = await contract.methods.createProposal("テスト", "テスト").send({ from: accounts[0] });
+        const response_1 = await contract.methods.createProposal(_proposalTitle, _proposalContent).send({ from: accounts[0] });
+
+        const _proposalId = 0       
+        const response_2 = await contract.methods.saveProposal(_proposalId).send({ from: accounts[0] });
+
+        // Debug
+        console.log('=== response of saveProposal function ===', response_2);  // Result: OK
+    })
 })
