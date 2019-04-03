@@ -70,11 +70,6 @@ contract Propose is Initializable {
     }
 
 
-    /* @notice Get proposerId */
-    function getProposerId() public view returns (uint256 _proposerId) {
-        return proposers.length - 1;
-    }
-
 
     /* @notice Save new proposer */
     function saveProposer(uint256 _proposerId) public returns (bool success) {
@@ -115,13 +110,24 @@ contract Propose is Initializable {
     }
 
 
+
+    /* @notice Get proposerId */
+    function getProposerId() public view returns (uint256 _proposerId) {
+        return proposers.length - 1;
+    }
+
     /* @notice Get number of total proposer */
     function getNumberOfTotalProposer() public view returns (uint) {
         return proposers.length;
     }
 
 
-        /* @notice Get number of total proposal */
+    /* @notice Get proposalId */
+    function getProposalId() public view returns (uint256 _proposalId) {
+        return proposals.length - 1;
+    }
+
+    /* @notice Get number of total proposal */
     function getNumberOfTotalProposal() public view returns (uint) {
         return proposals.length;
     }

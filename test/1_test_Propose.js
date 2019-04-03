@@ -82,7 +82,11 @@ contract('Propose', (accounts) => {
         //const response = await contract.methods.createProposal("テスト", "テスト").send({ from: accounts[0] });
         const response_1 = await contract.methods.createProposal(_proposalTitle, _proposalContent).send({ from: accounts[0] });
 
-        const _proposalId = 0
+        const _proposalId = await contract.methods.getProposalId().call();
+        //const _proposalId = 0
+        console.log('=== response of getProposalId function ===', _proposalId);  // Result: OK
+
+
         const response_2 = await contract.methods.saveProposal(_proposalId).send({ from: accounts[0] });
 
         // Debug
