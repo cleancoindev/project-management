@@ -20,7 +20,6 @@ class App extends Component {
     web3: null,
     accounts: null,
     contract: null,
-    project: null,
     route: window.location.pathname.replace("/","")
   };
 
@@ -40,9 +39,12 @@ class App extends Component {
     let Wallet = {};
     let Project = {};
     try {
-      Counter = require("../../contracts/Counter.sol");
-      Wallet = require("../../contracts/Wallet.sol");
-      Project = require("../../contracts/Project.sol");
+      // Counter = require("../../contracts/Counter.sol");
+      // Wallet = require("../../contracts/Wallet.sol");
+      // Project = require("../../contracts/Propose.sol");
+      Counter = require("./contracts/Counter.json");
+      Wallet = require("./contracts/Wallet.json");
+      Project = require("./contracts/Propose.json");  // Load ABI of contract of ContactNotebook
     } catch (e) {
       console.log(e);
     }
@@ -89,7 +91,7 @@ class App extends Component {
           }
         }
         if (Project.networks) {
-          deployedNetwork = Wallet.networks[networkId.toString()];
+          deployedNetwork = Project.networks[networkId.toString()];
           if (deployedNetwork) {
             instanceProject = new web3.eth.Contract(
               Project.abi,
@@ -136,7 +138,7 @@ class App extends Component {
       this.updateTokenOwner();
     }
     if (instanceProject) {
-      this.updateTokenOwner();
+      console.log('Title');
     }
   }
 
@@ -155,6 +157,12 @@ class App extends Component {
     // Update state with the result.
     this.setState({ tokenOwner: response.toString() === accounts[0].toString() });
   };
+
+  createProposer = async (_proposerName, _proposerAddress) => {
+    const { project, accounts } = this.state;
+    const response = await project.methods.createProposer(_proposerName, _proposerAddress).send({ from: accounts[0] })
+    console.log('=== response of createProposer function ===', response);
+  }
 
   getNumberOfTotalProposer = async () => {
     const { project } = this.state;
@@ -304,23 +312,17 @@ class App extends Component {
   }
 
   renderProject() {
-    const { hotLoaderDisabled, networkType, accounts, ganacheAccounts } = this.state;
-    const updgradeCommand = (networkType === 'private' && !hotLoaderDisabled) ? "upgrade-auto" : "upgrade";
     return (
       <div className={styles.wrapper}>
-        {this.state.web3 && this.state.contract && (
-          <div className={styles.contracts}>
-            <h1>Project Contract is good to Go!</h1>
-            <p>test1</p>
-            <p>test2</p>
-            <div className={styles.widgets}>
-              <Web3Info {...this.state} />
-              <Project
-                getNumberOfTotalProposer={this.getNumberOfTotalProposer}
-                {...this.state} />
-            </div>
+        <div className={styles.contracts}>
+          <h1>Project Contract is good to Go!</h1>
+          <div className={styles.widgets}>
+            <Project
+              getNumberOfTotalProposer={this.getNumberOfTotalProposer}
+              createProposer={this.createProposer}
+              {...this.state} />
           </div>
-        )}
+        </div>
       </div>
     );
   }

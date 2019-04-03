@@ -43,8 +43,12 @@ const getGanacheWeb3 = () => {
     return null;
   }
   const provider = new Web3.providers.HttpProvider(
-    'http://0.0.0.0:7545'     // Ganache-GUI
+    'http://0.0.0.0:7545'    // Ganache-GUI
+    //'http://0.0.0.0:8545'  // Ganache-CLI
   );
+  // const provider = new Web3.providers.HttpProvider(
+  //   'http://0.0.0.0:7545'     // Ganache-GUI
+  // );
   // const provider = new Web3.providers.HttpProvider(
   //   'http://0.0.0.0:8545'  // Ganache-CLI
   // );

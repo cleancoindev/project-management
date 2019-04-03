@@ -4,7 +4,6 @@ import styles from './Project.module.scss';
 
 export default class Counter extends Component {
 
-
   render()  {
     const { project } = this.props;
     return (
@@ -17,6 +16,9 @@ export default class Counter extends Component {
           <Button
             onClick={() => this.props.getNumberOfTotalProposer()}
             size="small">getNumberOfTotalProposer</Button>
+          <Button
+            onClick={() => this.props.createProposer("Taro Suzuki", "0xfed9ead1d8b7d7e7563903c3120c9b58e5c5d5aa")}
+            size="small">createProposer</Button>
         </div>
         <div className={styles.label}>
           <p>{project}</p>
