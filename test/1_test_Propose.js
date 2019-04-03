@@ -23,8 +23,8 @@ contract('Propose', (accounts) => {
     //proposerId = 0
     proposerName = "Taro Suzuki"
     proposerAddress = "0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b"
-    proposalTitle = "This is proposalTitle"
-    proposalContent = "This is proposalContent"
+    // proposalTitle = "This is proposalTitle"
+    // proposalContent = "This is proposalContent"
 
     it('Execute createProposer function', async (_proposerName=proposerName, _proposerAddress=proposerAddress) => {
         const accounts = await web3.eth.getAccounts();
@@ -41,8 +41,8 @@ contract('Propose', (accounts) => {
     // Successful
     proposerName = "Taro Suzuki"
     proposerAddress = "0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b"
-    proposalTitle = "This is proposalTitle"
-    proposalContent = "This is proposalContent"
+    // proposalTitle = "This is proposalTitle"
+    // proposalContent = "This is proposalContent"
 
     it('Execute saveProposer function', async (_proposerName=proposerName, _proposerAddress=proposerAddress) => {
         const accounts = await web3.eth.getAccounts();
@@ -57,5 +57,21 @@ contract('Propose', (accounts) => {
         
         response_2 = await contract.methods.saveProposer(proposerId).send({ from: accounts[0] });
         console.log('=== response of saveProposer function ===', response_2);  // Result: OK
+    })
+
+
+
+    // Success
+    const proposalTitle = "This is proposalTitle"
+    const proposalContent = "This is proposalContent"
+
+    it('Execute createProposal function', async (_proposalTitle=proposalTitle, _proposalContent=proposalContent) => {
+        const accounts = await web3.eth.getAccounts();
+        const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
+        //const response = await contract.methods.createProposal("テスト", "テスト").send({ from: accounts[0] });
+        const response = await contract.methods.createProposal(_proposalTitle, _proposalContent).send({ from: accounts[0] });
+
+        // Debug
+        console.log('=== response of createProposal function ===', response);  // Result: OK
     })
 })

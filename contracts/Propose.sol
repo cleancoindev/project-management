@@ -16,11 +16,11 @@ contract Propose is Initializable {
     Proposer[] public proposers;  // e.g) proposers[index].proposerName
 
 
-    // struct Proposal {
-    //     string proposalTitle;
-    //     string proposalContent;
-    // }
-    //Proposal[] public proposals;  // e.g) proposal[index].name
+    struct Proposal {
+        string proposalTitle;
+        string proposalContent;
+    }
+    Proposal[] public proposals;  // e.g) proposal[index].name
 
 
 
@@ -87,6 +87,34 @@ contract Propose is Initializable {
 
         return true;
     }
+
+
+
+    /* @notice Create new proposal */ 
+    function createProposal(
+        string memory _proposalTitle,
+        string memory _proposalContent
+    ) public returns (string memory, string memory) 
+    {
+        Proposal memory proposal = Proposal({
+            proposalTitle: _proposalTitle,
+            proposalContent: _proposalContent
+        });
+        proposals.push(proposal);
+
+        return (_proposalTitle, _proposalContent);
+    }
+
+    /* @notice Save new proposal */
+    function saveProposal(uint256 _proposalId) public returns (bool success) {
+        Proposal storage proposal = proposals[_proposalId];
+        proposal.proposalTitle = proposals[_proposalId].proposalTitle;
+        proposal.proposalContent = proposals[_proposalId].proposalContent;
+
+        return true;
+    }
+
+
 
 
     /* @notice Get number of total proposer */
