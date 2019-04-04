@@ -20,9 +20,7 @@ export default class Counter extends Component {
             onClick={() => this.props.createProposer("Taro Suzuki", "0xfed9ead1d8b7d7e7563903c3120c9b58e5c5d5aa")}
             size="small">createProposer</Button>
         </div>
-        <div className={styles.label}>
-          <p>{project}</p>
-        </div>
+        
       </div>
     );
   }

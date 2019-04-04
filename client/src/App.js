@@ -20,6 +20,7 @@ class App extends Component {
     web3: null,
     accounts: null,
     contract: null,
+    project: null,
     route: window.location.pathname.replace("/","")
   };
 
@@ -314,6 +315,11 @@ class App extends Component {
   renderProject() {
     return (
       <div className={styles.wrapper}>
+      {!this.state.web3 && this.renderLoader()}
+      {this.state.web3 && !this.state.project && (
+        this.renderDeployCheck('project')
+      )}
+      {this.state.web3 && this.state.project && (
         <div className={styles.contracts}>
           <h1>Project Contract is good to Go!</h1>
           <div className={styles.widgets}>
@@ -323,6 +329,7 @@ class App extends Component {
               {...this.state} />
           </div>
         </div>
+      )}
       </div>
     );
   }
