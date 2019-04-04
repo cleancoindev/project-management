@@ -20,7 +20,6 @@ class App extends Component {
     web3: null,
     accounts: null,
     contract: null,
-    project: null,
     route: window.location.pathname.replace("/","")
   };
 
@@ -179,6 +178,7 @@ class App extends Component {
 
     // Update state with the result.
     this.setState({ project: response });
+    this.setState({ number_of_total_proposer: response });
   };  
 
   increaseCount = async (number) => {

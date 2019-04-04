@@ -5,12 +5,13 @@ import styles from './Project.module.scss';
 export default class Counter extends Component {
 
   render()  {
-    const { project } = this.props;
+    const { project, number_of_total_proposer } = this.props;
     return (
       <div className={styles.counter}>
         <h3> Your Project Contract Instance </h3>
         <div className={styles.label}>
-          getNumberOfTotalProposer
+          <p>getNumberOfTotalProposer</p>
+          {number_of_total_proposer}
         </div>
         <div className={styles.buttons}>
           <Button
