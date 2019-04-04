@@ -167,14 +167,15 @@ class App extends Component {
 
   getNumberOfTotalProposer = async () => {
     const { project } = this.state;
-    const response = 0;
+    //const response = 0;
     
-    try {
-        const response = await project.methods.getNumberOfTotalProposer().call();
-    } catch {
-        console.log('null');
-    }
-    //const response = await project.methods.getNumberOfTotalProposer().call();
+    // try {
+    //     const response = await project.methods.getNumberOfTotalProposer().call();
+    // } catch {
+    //     console.log('null');
+    // }
+    const response = await project.methods.getNumberOfTotalProposer().call();
+    console.log('=== response of getNumberOfTotalProposer function ===', response);
 
     // Update state with the result.
     this.setState({ project: response });
