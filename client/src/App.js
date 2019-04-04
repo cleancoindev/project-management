@@ -162,6 +162,10 @@ class App extends Component {
     const { project, accounts } = this.state;
     const response = await project.methods.createProposer(_proposerName, _proposerAddress).send({ from: accounts[0] })
     console.log('=== response of createProposer function ===', response);
+
+    // Update state with the result.
+    this.setState({ proposer_name: _proposerName });
+    this.setState({ proposer_address: _proposerAddress });
   }
 
   getNumberOfTotalProposer = async () => {
@@ -177,7 +181,6 @@ class App extends Component {
     console.log('=== response of getNumberOfTotalProposer function ===', response);
 
     // Update state with the result.
-    this.setState({ project: response });
     this.setState({ number_of_total_proposer: response });
   };  
 
