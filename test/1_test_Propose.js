@@ -61,24 +61,23 @@ contract('Propose', (accounts) => {
 
 
 
-    // Success
+    // Fail
     const proposalBy = "0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b"
     const proposalTitle = "This is proposalTitle"
     const proposalContent = "This is proposalContent"
 
     it('Execute createProposal function', async (_proposalBy=proposalBy, _proposalTitle=proposalTitle, _proposalContent=proposalContent) => {
+  
         const accounts = await web3.eth.getAccounts();
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
-        //const response = await contract.methods.createProposal("テスト", "テスト").send({ from: accounts[0] });
-
-        
-        const response = await contract.methods.createProposal("0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b", _proposalTitle, _proposalContent).send({ from: accounts[0] });
+        const response = await contract.methods.createProposal(_proposalBy, _proposalTitle, _proposalContent).send({ from: accounts[0] });
+        //const response = await contract.methods.createProposal("0xfed9ead1d8b7d7e7563903c3120c9b58e5c5d5aa", "This is proposalTitle", "This is proposalContent").send({ from: accounts[0] });
 
         // Debug
         console.log('=== response of createProposal function ===', response);  // Result: OK
     })
 
-    // Success
+    // Fail
     it('Execute saveProposal function', async (_proposalBy=proposalBy, _proposalTitle=proposalTitle, _proposalContent=proposalContent) => {
         const accounts = await web3.eth.getAccounts();
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
