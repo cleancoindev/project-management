@@ -8,20 +8,60 @@ import CounterUI from "./components/Counter/index.js";
 import Wallet from "./components/Wallet/index.js";
 import Project from "./components/Project/index.js";  // Load Project components
 import Instructions from "./components/Instructions/index.js";
-import { Loader } from 'rimble-ui';
+import { Loader, Button } from 'rimble-ui';
 
 import { zeppelinSolidityHotLoaderOptions } from '../config/webpack';
 
 import styles from './App.module.scss';
 
 class App extends Component {
-  state = {
-    storageValue: 0,
-    web3: null,
-    accounts: null,
-    contract: null,
-    route: window.location.pathname.replace("/","")
-  };
+  // state = {
+  //   storageValue: 0,
+  //   web3: null,
+  //   accounts: null,
+  //   contract: null,
+  //   proposer_name: "",
+  //   proposer_address: "",
+  //   route: window.location.pathname.replace("/","")
+  // };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      storageValue: 0,
+      web3: null,
+      accounts: null,
+      contract: null,
+      value: '',
+      proposer_name: "",
+      proposer_address: "",
+      route: window.location.pathname.replace("/","")
+    };
+
+    this.handleInput = this.handleInput.bind(this);
+    this.send = this.send.bind(this);
+  }
+
+
+  handleInput({ target: { value } }) {
+    this.setState({ value });
+    console.log("handleInput called!"); 
+  }
+
+  send() {
+    const { value } = this.state;
+
+    this.setState({
+      value: '',
+      proposer_name: value,
+      proposer_address: ''
+    });
+    console.log("send called!");
+  }  
+
+
+
 
   getGanacheAddresses = async () => {
     if (!this.ganacheProvider) {
@@ -343,6 +383,12 @@ class App extends Component {
               createProposer={this.createProposer}
               createProposal={this.createProposal}
               {...this.state} />
+          </div>
+
+          <div className={styles.widgets}>
+            <input type="text" value={this.state.value} onChange={this.handleInput} />
+
+            <Button onClick={this.send} />SEND
           </div>
         </div>
       )}

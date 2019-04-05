@@ -5,7 +5,7 @@ import styles from './Project.module.scss';
 export default class Counter extends Component {
 
   render()  {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content } = this.props;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content  } = this.props;
     return (
       <div className={styles.counter}>
         <h3> Your Project Contract Instance </h3>
@@ -13,6 +13,7 @@ export default class Counter extends Component {
           <Button
             onClick={() => this.props.getNumberOfTotalProposer()}
             size="small">getNumberOfTotalProposer</Button>
+
           <Button
             onClick={() => this.props.createProposer("Taro Suzuki", "0xfed9ead1d8b7d7e7563903c3120c9b58e5c5d5aa")}
             size="small">createProposer</Button>
