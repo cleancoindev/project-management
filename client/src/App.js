@@ -388,7 +388,7 @@ class App extends Component {
           <div className={styles.widgets}>
             <input type="text" value={this.state.value} onChange={this.handleInput} />
 
-            <Button onClick={this.send} />SEND
+            <Button onClick={this.send}>SEND</Button>
           </div>
         </div>
       )}
