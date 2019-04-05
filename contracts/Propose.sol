@@ -5,18 +5,19 @@ import "zos-lib/contracts/Initializable.sol";
 
 contract Propose is Initializable {
 
+    //uint256 public proposerId;
+    //uint256 public proposalId;
+
     struct Proposer {
-        //uint256 proposerId;
         string proposerName;      // name of person who propose
         address proposerAddress;  // address of person who propose
-        //string proposalTitle;
-        //string proposalContent;
-        //mapping (address => Proposal[]) proposal;
+        //mapping (uint256 => Proposal) proposals;
     }
     Proposer[] public proposers;  // e.g) proposers[index].proposerName
 
 
     struct Proposal {
+        address proposalBy;
         string proposalTitle;
         string proposalContent;
     }
@@ -87,22 +88,25 @@ contract Propose is Initializable {
 
     /* @notice Create new proposal */ 
     function createProposal(
+        address _proposalBy,
         string memory _proposalTitle,
         string memory _proposalContent
-    ) public returns (string memory, string memory) 
+    ) public returns (address, string memory, string memory) 
     {
         Proposal memory proposal = Proposal({
+            proposalBy: _proposalBy,
             proposalTitle: _proposalTitle,
             proposalContent: _proposalContent
         });
         proposals.push(proposal);
 
-        return (_proposalTitle, _proposalContent);
+        return (_proposalBy, _proposalTitle, _proposalContent);
     }
 
     /* @notice Save new proposal */
     function saveProposal(uint256 _proposalId) public returns (bool success) {
         Proposal storage proposal = proposals[_proposalId];
+        proposal.proposalBy = proposals[_proposalId].proposalBy;
         proposal.proposalTitle = proposals[_proposalId].proposalTitle;
         proposal.proposalContent = proposals[_proposalId].proposalContent;
 

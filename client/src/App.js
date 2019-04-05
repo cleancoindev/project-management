@@ -168,6 +168,17 @@ class App extends Component {
     this.setState({ proposer_address: _proposerAddress });
   }
 
+  createProposal = async (_proposalBy, _proposalTitle, _proposalContent) => {
+    const { project, accounts } = this.state;
+    const response = await project.methods.createProposal(_proposalBy, _proposalTitle, _proposalContent).send({ from: accounts[0] })
+    console.log('=== response of createProposal function ===', response);
+
+    // Update state with the result.
+    this.setState({ proposal_by: _proposalBy });
+    this.setState({ proposal_title: _proposalTitle });
+    this.setState({ proposal_content: _proposalContent });
+  }
+
   getNumberOfTotalProposer = async () => {
     const { project } = this.state;
     //const response = 0;
@@ -330,6 +341,7 @@ class App extends Component {
             <Project
               getNumberOfTotalProposer={this.getNumberOfTotalProposer}
               createProposer={this.createProposer}
+              createProposal={this.createProposal}
               {...this.state} />
           </div>
         </div>
