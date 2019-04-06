@@ -37,13 +37,18 @@ class App extends Component {
     };
 
     this.handleInput = this.handleInput.bind(this);
+    this.handleInputProposerAddress = this.handleInputProposerAddress.bind(this)
     this.send = this.send.bind(this);
   }
 
 
   handleInput({ target: { value } }) {
-    this.setState({ value });
+    this.setState({ value });  // { "value": value } 
     console.log("handleInput called!"); 
+  }
+
+  handleInputProposerAddress({ target: { valueOfProposerAddress } }) {
+    this.setState({ valueOfProposerAddress });
   }
 
   // send() {
@@ -206,21 +211,26 @@ class App extends Component {
   }
 
   send = async (_proposerName, _proposerAddress) => {
-    const { project, accounts, value } = this.state;
-    const address = "0x51a3f1892fd8666bba10a610b6b1ed6397f0d313"
+    const { project, accounts, value, valueOfProposerAddress } = this.state;
+    //const address = "0x51a3f1892fd8666bba10a610b6b1ed6397f0d313"   // Replace constant with variable of valueOfProposerAddress
     this.setState({
       value: '',
+      valueOfProposerAddress: '',
       proposer_name: value,
-      proposer_address: address
+      proposer_address: valueOfProposerAddress
+      //proposer_address: address
     });
     console.log("send called!");
+    console.log("=== valueOfProposerAddress ===", valueOfProposerAddress)   // Result: undefined
 
-    const response = await project.methods.createProposer(this.state.proposer_name, address).send({ from: accounts[0] })
+    const response = await project.methods.createProposer(this.state.proposer_name, this.state.proposer_address).send({ from: accounts[0] })
+    //const response = await project.methods.createProposer(this.state.proposer_name, address).send({ from: accounts[0] })
     console.log('=== response of createProposer function ===', response);
 
     // Update state with the result.
     this.setState({ proposer_name: value });
-    this.setState({ proposer_address: address });
+    this.setState({ proposer_address: valueOfProposerAddress });
+    //this.setState({ proposer_address: address });
   }  
 
   createProposal = async (_proposalBy, _proposalTitle, _proposalContent) => {
@@ -401,7 +411,11 @@ class App extends Component {
           </div>
 
           <div className={styles.widgets}>
+            <p>Proposer name</p>
             <input type="text" value={this.state.value} onChange={this.handleInput} />
+
+            <p>Proposer address</p>
+            <input type="text" value={this.state.valueOfProposerAddress} onChange={this.handleInputProposerAddress} />
 
             <Button onClick={this.send}>SEND</Button>
           </div>
