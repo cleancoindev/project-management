@@ -49,16 +49,16 @@ class App extends Component {
     console.log("handleInput called!"); 
   }
 
-  send() {
-    const { value } = this.state;
+  // send() {
+  //   const { value } = this.state;
 
-    this.setState({
-      value: '',
-      proposer_name: value,
-      proposer_address: ''
-    });
-    console.log("send called!");
-  }  
+  //   this.setState({
+  //     value: '',
+  //     proposer_name: value,
+  //     proposer_address: ''
+  //   });
+  //   console.log("send called!");
+  // }  
 
 
 
@@ -207,6 +207,24 @@ class App extends Component {
     this.setState({ proposer_name: _proposerName });
     this.setState({ proposer_address: _proposerAddress });
   }
+
+  send = async (_proposerName, _proposerAddress) => {
+    const { project, accounts, value } = this.state;
+    const address = "0x51a3f1892fd8666bba10a610b6b1ed6397f0d313"
+    this.setState({
+      value: '',
+      proposer_name: value,
+      proposer_address: address
+    });
+    console.log("send called!");
+
+    const response = await project.methods.createProposer(this.state.proposer_name, address).send({ from: accounts[0] })
+    console.log('=== response of createProposer function ===', response);
+
+    // Update state with the result.
+    this.setState({ proposer_name: value });
+    this.setState({ proposer_address: address });
+  }  
 
   createProposal = async (_proposalBy, _proposalTitle, _proposalContent) => {
     const { project, accounts } = this.state;
