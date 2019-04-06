@@ -33,9 +33,6 @@ class App extends Component {
       web3: null,
       accounts: null,
       contract: null,
-      value: '',
-      proposer_name: "",
-      proposer_address: "",
       route: window.location.pathname.replace("/","")
     };
 
