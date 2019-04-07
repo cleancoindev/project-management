@@ -52,8 +52,6 @@ class App extends Component {
   // handleInput(event) {
   //   let value = event.target.value; 
   //   this.setState({ value: value });  // { "value": value } 
-  //   console.log("handleInput called!");
-  //   console.log("=== [handleInput]： value ===", event.target.value);
   // }
 
   ////// Oridinal
@@ -462,6 +460,23 @@ class App extends Component {
 
             <Button onClick={this.send}>SEND</Button>
           </div>
+
+
+
+          
+          <div className={styles.widgets}>
+            <form onSubmit={this.send}>
+              <p>Proposer name</p>
+              <input type="text" value={this.state.value} onChange={this.handleInput} />
+
+              <p>Proposer address</p>
+              <input type="text" value={this.state.valueOfProposerAddress} onChange={this.handleInputProposerAddress} />
+              {/*  <input type="text" value={this.state.address} onChange={this.handleInputProposerAddress} /> */}
+
+              <Button><input type="submit" value="Submit" /></Button>
+            </form>
+          </div>
+
         </div>
       )}
       </div>
