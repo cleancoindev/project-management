@@ -44,6 +44,7 @@ class App extends Component {
 
     this.handleInput = this.handleInput.bind(this);
     this.handleInputProposerAddress = this.handleInputProposerAddress.bind(this)
+    this.handleAddress = this.handleAddress.bind(this)
     this.send = this.send.bind(this);
   }
 
@@ -57,7 +58,6 @@ class App extends Component {
   ////// Oridinal
   handleInput({ target: { value } }) {
     this.setState({ value });  // { "value": value } 
-    console.log("handleInput called!");
     console.log("=== [handleInput]： value ===", value);
   }
 
@@ -65,6 +65,12 @@ class App extends Component {
   handleInputProposerAddress({ target: { valueOfProposerAddress } }) {
     this.setState({ valueOfProposerAddress });
     console.log("=== [handleInputProposerAddress]： valueOfProposerAddress ===", valueOfProposerAddress); 
+  }
+
+
+  handleAddress({ target: { value } }) {
+    this.setState({ value });
+    console.log("=== [handleInputProposerAddress]： valueOfProposerAddress ===", value); 
   }
 
 
@@ -458,12 +464,15 @@ class App extends Component {
             <input type="text" value={this.state.valueOfProposerAddress} onChange={this.handleInputProposerAddress} />
             {/*  <input type="text" value={this.state.address} onChange={this.handleInputProposerAddress} /> */}
 
+            <p>Proposer address（test）</p>
+            <input type="text" value={this.state.value} onChange={this.handleAddress} />
+
             <Button onClick={this.send}>SEND</Button>
           </div>
 
 
 
-          
+
           <div className={styles.widgets}>
             <form onSubmit={this.send}>
               <p>Proposer name</p>
