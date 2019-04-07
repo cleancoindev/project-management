@@ -29,11 +29,17 @@ class App extends Component {
     super(props);
 
     this.state = {
+      /////// Default state
       storageValue: 0,
       web3: null,
       accounts: null,
       contract: null,
       route: window.location.pathname.replace("/",""),
+
+      /////// Added state
+      proposer_name: '',
+      //proposer_address: ''
+      proposer_address: '0x50ab3d146401766a4b767c1fd3cd090cfd53aac0'
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -87,6 +93,7 @@ class App extends Component {
     //this.setState({ proposer_address: address });
   }  
 
+
   // send() {
   //   const { value } = this.state;
   //   this.setState({
@@ -96,7 +103,6 @@ class App extends Component {
   //   });
   //   console.log("send called!");
   // }  
-
 
 
 
