@@ -8,7 +8,7 @@ import CounterUI from "./components/Counter/index.js";
 import Wallet from "./components/Wallet/index.js";
 import Project from "./components/Project/index.js";  // Load Project components
 import Instructions from "./components/Instructions/index.js";
-import { Loader, Button } from 'rimble-ui';
+import { Loader, Button, Card } from 'rimble-ui';
 
 import { zeppelinSolidityHotLoaderOptions } from '../config/webpack';
 
@@ -455,13 +455,15 @@ class App extends Component {
           </div>
 
           <div className={styles.widgets}>
-            <p>Proposer name</p>
-            <input type="text" value={this.state.value} onChange={this.handleInput} />
+            <Card width={'420px'} bg="primary">
+              <p>Proposer name</p>
+              <input type="text" value={this.state.value} onChange={this.handleInput} />
 
-            <p>Proposer address</p>
-            <input type="text" value={this.state.valueOfProposerAddress} onChange={this.handleInputProposerAddress} />
+              <p>Proposer address</p>
+              <input type="text" value={this.state.valueOfProposerAddress} onChange={this.handleInputProposerAddress} />
 
-            <Button onClick={this.send}>SEND</Button>
+              <Button onClick={this.send}>SEND（createProposer）</Button>
+            </Card>
           </div>
 
 
