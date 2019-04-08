@@ -69,18 +69,23 @@ class App extends Component {
 
   send = async (_proposerName, _proposerAddress) => {
     const { project, accounts, value, valueOfProposerAddress } = this.state;
-    //const address = "0x51a3f1892fd8666bba10a610b6b1ed6397f0d313"   // Replace constant with variable of valueOfProposerAddress
-    this.setState({
-      value: '',
-      valueOfProposerAddress: '',
-      proposer_name: value,
-      proposer_address: valueOfProposerAddress
-      //proposer_address: address
-    });
-    console.log("send called!");
-    console.log("=== valueOfProposerAddress ===", valueOfProposerAddress)   // Result: undefined
 
-    const response = await project.methods.createProposer(this.state.proposer_name, this.state.proposer_address).send({ from: accounts[0] })
+    //const value_of_proposer_address = this.state.valueOfProposerAddress;
+    //console.log('=== this.state.valueOfProposerAddress ===', this.state.valueOfProposerAddress);
+
+    //const address = "0x51a3f1892fd8666bba10a610b6b1ed6397f0d313"   // Replace constant with variable of valueOfProposerAddress
+
+    this.setState({
+      proposer_name: value,
+      proposer_address: valueOfProposerAddress,
+      //proposer_address: value_of_proposer_address,
+      value: '',
+      valueOfProposerAddress: ''
+    });
+    console.log("=== valueOfProposerAddress ===", valueOfProposerAddress)
+
+    const response = await project.methods.createProposer(value, valueOfProposerAddress).send({ from: accounts[0] })
+    //const response = await project.methods.createProposer(this.state.proposer_name, this.state.proposer_address).send({ from: accounts[0] })
     //const response = await project.methods.createProposer(this.state.proposer_name, address).send({ from: accounts[0] })
     console.log('=== response of createProposer function ===', response);
 
