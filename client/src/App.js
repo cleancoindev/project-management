@@ -38,13 +38,13 @@ class App extends Component {
 
       /////// Added state
       proposer_name: '',
-      //proposer_address: ''
-      proposer_address: '0x50ab3d146401766a4b767c1fd3cd090cfd53aac0'
+      proposer_address: '',
+      value: '',
+      valueOfProposerAddress: ''
     };
 
     this.handleInput = this.handleInput.bind(this);
     this.handleInputProposerAddress = this.handleInputProposerAddress.bind(this)
-    this.handleAddress = this.handleAddress.bind(this)
     this.send = this.send.bind(this);
   }
 
@@ -57,22 +57,15 @@ class App extends Component {
 
   ////// Oridinal
   handleInput({ target: { value } }) {
-    this.setState({ value });  // { "value": value } 
+    this.setState({ value: value });  // { "value": value } 
     console.log("=== [handleInput]： value ===", value);
   }
 
 
-  handleInputProposerAddress({ target: { valueOfProposerAddress } }) {
-    this.setState({ valueOfProposerAddress });
-    console.log("=== [handleInputProposerAddress]： valueOfProposerAddress ===", valueOfProposerAddress); 
-  }
-
-
-  handleAddress({ target: { value } }) {
-    this.setState({ value });
+  handleInputProposerAddress({ target: { value } }) {
+    this.setState({ valueOfProposerAddress: value });
     console.log("=== [handleInputProposerAddress]： valueOfProposerAddress ===", value); 
   }
-
 
   send = async (_proposerName, _proposerAddress) => {
     const { project, accounts, value, valueOfProposerAddress } = this.state;
@@ -462,10 +455,6 @@ class App extends Component {
 
             <p>Proposer address</p>
             <input type="text" value={this.state.valueOfProposerAddress} onChange={this.handleInputProposerAddress} />
-            {/*  <input type="text" value={this.state.address} onChange={this.handleInputProposerAddress} /> */}
-
-            <p>Proposer address（test）</p>
-            <input type="text" value={this.state.value} onChange={this.handleAddress} />
 
             <Button onClick={this.send}>SEND</Button>
           </div>
@@ -480,7 +469,6 @@ class App extends Component {
 
               <p>Proposer address</p>
               <input type="text" value={this.state.valueOfProposerAddress} onChange={this.handleInputProposerAddress} />
-              {/*  <input type="text" value={this.state.address} onChange={this.handleInputProposerAddress} /> */}
 
               <Button><input type="submit" value="Submit" /></Button>
             </form>

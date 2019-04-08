@@ -3,6 +3,7 @@ pragma solidity ^0.5.0;
 // import "openzeppelin-eth/contracts/ownership/Ownable.sol";
 import "zos-lib/contracts/Initializable.sol";
 
+
 contract Propose is Initializable {
 
     //uint256 public proposerId;
