@@ -480,17 +480,15 @@ class App extends Component {
           <div className={styles.widgets}>
             <Card width={'420px'} bg="primary">
               <ul>
-                <li>{proposer_name}</li>
-                <li>{proposer_address}</li>
-              </ul>
-
-              <ul>
                 {this.state.proposer_name_list.map( (proposer_name_list, i) => {
-                  return <li key={i}>{proposer_name_list}</li>
-                  return <li key={i}>{proposer_address_list}</li>
+                  return (
+                    <ul>
+                      <li key={i}>{proposer_name_list}</li>
+                      <li key={i}>{proposer_address_list}</li>
+                    </ul>
+                  )
                 })}
               </ul>
-
             </Card>
           </div>
 
