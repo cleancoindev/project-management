@@ -60,6 +60,17 @@ contract('Propose', (accounts) => {
     })
 
 
+    const proposerId = 1
+    it('Execute getProposer function', async (_proposalId=proposerId) => {
+      const accounts = await web3.eth.getAccounts();
+      const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
+      const response = await contract.methods.getProposer(__proposalId).send({ from: accounts[0] });
+
+      // Debug
+      console.log('=== response of cgetProposer function ===', response); 
+    });
+
+
 
     // Fail
     const proposalBy = "0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b"
@@ -94,4 +105,8 @@ contract('Propose', (accounts) => {
         // Debug
         console.log('=== response of saveProposal function ===', response_2);  // Result: OK
     })
+
+
+
+
 })
