@@ -437,6 +437,8 @@ class App extends Component {
   }
 
   renderProject() {
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content } = this.state;
+
     return (
       <div className={styles.wrapper}>
       {!this.state.web3 && this.renderLoader()}
@@ -463,6 +465,11 @@ class App extends Component {
               <input type="text" value={this.state.valueOfProposerAddress} onChange={this.handleInputProposerAddress} />
 
               <Button onClick={this.send}>SEND（createProposer）</Button>
+
+              <ul>
+                <li>{proposer_name}</li>
+                <li>{proposer_address}</li>
+              </ul>
             </Card>
           </div>
 
