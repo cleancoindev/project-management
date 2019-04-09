@@ -465,14 +465,17 @@ class App extends Component {
               <input type="text" value={this.state.valueOfProposerAddress} onChange={this.handleInputProposerAddress} />
 
               <Button onClick={this.send}>SEND（createProposer）</Button>
+            </Card>
+          </div>
 
+          <div className={styles.widgets}>
+            <Card width={'420px'} bg="primary">
               <ul>
                 <li>{proposer_name}</li>
                 <li>{proposer_address}</li>
               </ul>
             </Card>
           </div>
-
 
 
         </div>
