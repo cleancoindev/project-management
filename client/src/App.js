@@ -40,7 +40,11 @@ class App extends Component {
       proposer_name: '',
       proposer_address: '',
       value: '',
-      valueOfProposerAddress: ''
+      valueOfProposerAddress: '',
+
+      /////// List of result of executing createProposer function 
+      proposer_name_list: [],
+      proposer_address_list: []
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -68,7 +72,7 @@ class App extends Component {
   }
 
   send = async (_proposerName, _proposerAddress) => {
-    const { project, accounts, value, valueOfProposerAddress } = this.state;
+    const { project, accounts, value, valueOfProposerAddress, proposer_name_list, proposer_address_list } = this.state;
 
     //const value_of_proposer_address = this.state.valueOfProposerAddress;
     //console.log('=== this.state.valueOfProposerAddress ===', this.state.valueOfProposerAddress);
@@ -89,10 +93,15 @@ class App extends Component {
     //const response = await project.methods.createProposer(this.state.proposer_name, address).send({ from: accounts[0] })
     console.log('=== response of createProposer function ===', response);
 
-    // Update state with the result.
+    /////// Update state with the result.
     this.setState({ proposer_name: value });
     this.setState({ proposer_address: valueOfProposerAddress });
-    //this.setState({ proposer_address: address });
+
+    /////// List of result of executing createProposer function 
+    this.state.proposer_name_list.push(value);                                  // Push to this.state.proposer_name_list
+    this.setState({ proposer_name_list: this.state.proposer_name_list });       // Save this.state.proposer_name_list which is pushed
+    this.state.proposer_address_list.push(valueOfProposerAddress);              // Push to this.state.proposer_address_list
+    this.setState({ proposer_address_list: this.state.proposer_address_list }); // Save this.state.proposer_address_list which is pushed
   }  
 
 
@@ -437,7 +446,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content } = this.state;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposer_name_list, proposer_address_list } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -474,6 +483,14 @@ class App extends Component {
                 <li>{proposer_name}</li>
                 <li>{proposer_address}</li>
               </ul>
+
+              <ul>
+                {this.state.proposer_name_list.map( (proposer_name_list, i) => {
+                  return <li key={i}>{proposer_name_list}</li>
+                  return <li key={i}>{proposer_address_list}</li>
+                })}
+              </ul>
+
             </Card>
           </div>
 
