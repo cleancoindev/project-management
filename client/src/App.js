@@ -74,24 +74,22 @@ class App extends Component {
   send = async (_proposerName, _proposerAddress) => {
     const { project, accounts, value, valueOfProposerAddress, proposer_name_list, proposer_address_list } = this.state;
 
-    //const value_of_proposer_address = this.state.valueOfProposerAddress;
-    //console.log('=== this.state.valueOfProposerAddress ===', this.state.valueOfProposerAddress);
-
-    //const address = "0x51a3f1892fd8666bba10a610b6b1ed6397f0d313"   // Replace constant with variable of valueOfProposerAddress
-
     this.setState({
       proposer_name: value,
       proposer_address: valueOfProposerAddress,
-      //proposer_address: value_of_proposer_address,
       value: '',
       valueOfProposerAddress: ''
     });
     console.log("=== valueOfProposerAddress ===", valueOfProposerAddress)
 
-    const response = await project.methods.createProposer(value, valueOfProposerAddress).send({ from: accounts[0] })
-    //const response = await project.methods.createProposer(this.state.proposer_name, this.state.proposer_address).send({ from: accounts[0] })
-    //const response = await project.methods.createProposer(this.state.proposer_name, address).send({ from: accounts[0] })
-    console.log('=== response of createProposer function ===', response);
+    const response_1 = await project.methods.createProposer(value, valueOfProposerAddress).send({ from: accounts[0] })
+    console.log('=== response of createProposer function ===', response_1);
+
+    const proposerId = await project.methods.getProposerId().call();
+    console.log('=== response of getProposerId function ===', proposerId);
+        
+    const response_2 = await project.methods.saveProposer(proposerId).send({ from: accounts[0] });
+    console.log('=== response of saveProposer function ===', response_2);
 
     /////// Update state with the result.
     this.setState({ proposer_name: value });
@@ -489,8 +487,6 @@ class App extends Component {
               )
             })}
           </div>
-
-
         </div>
       )}
       </div>
