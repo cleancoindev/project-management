@@ -468,19 +468,6 @@ class App extends Component {
 
 
 
-
-          <div className={styles.widgets}>
-            <form onSubmit={this.send}>
-              <p>Proposer name</p>
-              <input type="text" value={this.state.value} onChange={this.handleInput} />
-
-              <p>Proposer address</p>
-              <input type="text" value={this.state.valueOfProposerAddress} onChange={this.handleInputProposerAddress} />
-
-              <Button><input type="submit" value="Submit" /></Button>
-            </form>
-          </div>
-
         </div>
       )}
       </div>
