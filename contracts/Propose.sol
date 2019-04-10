@@ -87,8 +87,9 @@ contract Propose is Initializable {
 
 
     /* @notice Call proposer */ 
-    function getProposer(uint256 _proposerId) public returns (string memory _proposerName, address _proposerAddress) {
-        Proposer storage proposer = proposers[_proposerId];
+    function getProposer(uint256 _proposerId) public view returns (string memory _proposerName, address _proposerAddress) {
+        //Proposer storage proposer = proposers[_proposerId];
+        Proposer memory proposer = proposers[_proposerId];
 
         _proposerName = proposers[_proposerId].proposerName;
         _proposerAddress = proposers[_proposerId].proposerAddress;

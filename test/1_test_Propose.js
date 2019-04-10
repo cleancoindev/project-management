@@ -59,7 +59,8 @@ contract('Propose', (accounts) => {
     it('Execute getProposer function', async (_proposalId=proposerId) => {
       const accounts = await web3.eth.getAccounts();
       const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
-      const response = await contract.methods.getProposer(_proposalId).send({ from: accounts[0] });
+      const response = await contract.methods.getProposer(_proposalId).call();
+      //const response = await contract.methods.getProposer(_proposalId).send({ from: accounts[0] });
 
       // Debug
       console.log('=== response of getProposer function ===', response); 
