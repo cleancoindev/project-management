@@ -124,7 +124,10 @@ class App extends Component {
     });
 
     const response = await project.methods.getProposer(value).send({ from: accounts[0] })
-    console.log('=== response of createProposer function ===', response);
+
+    console.log('=== response of getProposer function ===', response);
+    console.log('=== response of getProposer function（response._proposerName） ===', response._proposerName);
+    console.log('=== response of getProposer function（response._proposerAddress） ===', response._proposerAddress);    
 
     /////// Update state with the result.
     this.setState({ proposer_id: Number(value) });
@@ -524,7 +527,9 @@ class App extends Component {
 
               <Button onClick={this.sendGetProposer}>SEND（getProposer）</Button>
             </Card>
+          </div>
 
+          <div className={styles.widgets}>
             <Card width={'420px'} bg="primary">
               {proposer_id}
             </Card>
