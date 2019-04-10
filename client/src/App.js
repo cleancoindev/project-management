@@ -123,7 +123,8 @@ class App extends Component {
       valueOfProposerId: '',
     });
 
-    const response = await project.methods.getProposer(value).send({ from: accounts[0] })
+    const response = await project.methods.getProposer(value).call();
+    //const response = await project.methods.getProposer(value).send({ from: accounts[0] })
 
     console.log('=== response of getProposer function ===', response);
     console.log('=== response of getProposer function（response._proposerName） ===', response._proposerName);
@@ -131,6 +132,8 @@ class App extends Component {
 
     /////// Update state with the result.
     this.setState({ proposer_id: Number(value) });
+    this.setState({ proposer_name_call: response._proposerName });
+    this.setState({ proposer_address_call: response._proposerAddress });
   }  
 
 
@@ -475,7 +478,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposer_name_list, proposer_address_list, proposer_id } = this.state;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -531,7 +534,8 @@ class App extends Component {
 
           <div className={styles.widgets}>
             <Card width={'420px'} bg="primary">
-              {proposer_id}
+              {proposer_name_call}
+              {proposer_address_call}
             </Card>
           </div>
         </div>
