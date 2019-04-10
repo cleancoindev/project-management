@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-blank": "rm -rf client/src && cp -rf barebones/src client/",
     "client": "cd client && npm run start",
-    "console": "truffle console --network development"
+    "console": "truffle console --network development",
+    "session": "zos session --network development --expires 7200"
   },
   "repository": {
     "type": "git",
