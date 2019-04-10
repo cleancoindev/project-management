@@ -44,12 +44,19 @@ class App extends Component {
 
       /////// List of result of executing createProposer function 
       proposer_name_list: [],
-      proposer_address_list: []
+      proposer_address_list: [],
+
+      //////
+      proposer_id: '',
+      valueOfProposerId: ''
     };
 
     this.handleInput = this.handleInput.bind(this);
-    this.handleInputProposerAddress = this.handleInputProposerAddress.bind(this)
+    this.handleInputProposerAddress = this.handleInputProposerAddress.bind(this);
     this.send = this.send.bind(this);
+
+    this.handleInputGetProposer = this.handleInputGetProposer.bind(this);
+    this.sendGetProposer = this.sendGetProposer.bind(this);
   }
 
 
@@ -100,6 +107,27 @@ class App extends Component {
     this.setState({ proposer_name_list: this.state.proposer_name_list });       // Save this.state.proposer_name_list which is pushed
     this.state.proposer_address_list.push(valueOfProposerAddress);              // Push to this.state.proposer_address_list
     this.setState({ proposer_address_list: this.state.proposer_address_list }); // Save this.state.proposer_address_list which is pushed
+  }  
+
+
+  handleInputGetProposer({ target: { value } }) {
+    this.setState({ valueOfProposerId: value });
+    console.log("=== [handleInputGetProposer]： value ===", value); 
+  }
+
+  sendGetProposer = async (_proposerId) => {
+    const { project, accounts, value } = this.state;
+
+    this.setState({
+      proposer_id: value,
+      valueOfProposerId: '',
+    });
+
+    const response = await project.methods.getProposer(value).send({ from: accounts[0] })
+    console.log('=== response of createProposer function ===', response);
+
+    /////// Update state with the result.
+    this.setState({ proposer_id: Number(value) });
   }  
 
 
@@ -444,7 +472,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposer_name_list, proposer_address_list } = this.state;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposer_name_list, proposer_address_list, proposer_id } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -486,6 +514,20 @@ class App extends Component {
                 </Card>
               )
             })}
+          </div>
+
+
+          <div className={styles.widgets}>
+            <Card width={'420px'} bg="primary">
+              <p>Proposer id</p>
+              <input type="text" value={this.state.valueOfProposerId} onChange={this.handleInputGetProposer} />
+
+              <Button onClick={this.sendGetProposer}>SEND（getProposer）</Button>
+            </Card>
+
+            <Card width={'420px'} bg="primary">
+              {proposer_id}
+            </Card>
           </div>
         </div>
       )}
