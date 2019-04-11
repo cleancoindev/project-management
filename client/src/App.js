@@ -89,6 +89,7 @@ class App extends Component {
     });
     console.log("=== valueOfProposerAddress ===", valueOfProposerAddress)
 
+    //const response_1 = await project.methods.createProposer(value, valueOfProposerAddress).call();
     const response_1 = await project.methods.createProposer(value, valueOfProposerAddress).send({ from: accounts[0] })
     console.log('=== response of createProposer function ===', response_1);
 
