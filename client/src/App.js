@@ -48,7 +48,18 @@ class App extends Component {
 
       //////
       proposer_id: '',
-      valueOfProposerId: ''
+      valueOfProposerId: '',
+
+      ////// Proposal
+      proposal_by: '',
+      proposal_title: '',
+      proposal_content: '',
+      valueOfProposalBy: '',
+      valueOfProposalTitle: '',
+      valueOfProposalContent: '',
+      proposal_by_list: [],
+      proposal_title_list: [],
+      proposal_content_list: [],
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -57,6 +68,11 @@ class App extends Component {
 
     this.handleInputGetProposer = this.handleInputGetProposer.bind(this);
     this.sendGetProposer = this.sendGetProposer.bind(this);
+
+    this.handleInputProposalBy = this.handleInputProposalBy.bind(this);
+    this.handleInputProposalTitle = this.handleInputProposalTitle.bind(this);
+    this.handleInputProposalContent = this.handleInputProposalContent.bind(this);
+    this.sendCreateProposal = this.sendCreateProposal.bind(this);
   }
 
 
@@ -89,7 +105,6 @@ class App extends Component {
     });
     console.log("=== valueOfProposerAddress ===", valueOfProposerAddress)
 
-    //const response_1 = await project.methods.createProposer(value, valueOfProposerAddress).call();
     const response_1 = await project.methods.createProposer(value, valueOfProposerAddress).send({ from: accounts[0] })
     console.log('=== response of createProposer function ===', response_1);
 
@@ -116,7 +131,7 @@ class App extends Component {
     console.log("=== [handleInputGetProposer]： value ===", value); 
   }
 
-  sendGetProposer = async (_proposerId) => {
+    sendGetProposer = async (_proposerId) => {
     const { project, accounts, value } = this.state;
 
     this.setState({
@@ -136,6 +151,59 @@ class App extends Component {
     this.setState({ proposer_name_call: response._proposerName });
     this.setState({ proposer_address_call: response._proposerAddress });
   }  
+
+
+
+
+
+
+
+
+  handleInputProposalBy({ target: { value } }) {
+    this.setState({ valueOfProposalBy: value });
+  }
+
+  handleInputProposalTitle({ target: { value } }) {
+    this.setState({ valueOfProposalTitle: value });
+  }
+
+  handleInputProposalContent({ target: { value } }) {
+    this.setState({ valueOfProposalContent: value });
+  }
+
+  sendCreateProposal = async (_proposalBy, _proposalTitle, _proposalContent) => {
+    const { project, accounts, proposal_by, proposal_title, proposal_content, valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent} = this.state;
+
+    this.setState({
+      proposal_by: valueOfProposalBy,
+      proposal_title: valueOfProposalTitle,
+      proposal_content: valueOfProposalContent,
+
+      valueOfProposalBy: '',
+      valueOfProposalTitle: '',
+      valueOfProposalContent: ''
+    });
+
+
+    const response_1 = await project.methods.createProposal(valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent).send({ from: accounts[0] })
+
+    const proposalId = await project.methods.getProposalId().call();
+        
+    const response_2 = await project.methods.saveProposal(proposalId).send({ from: accounts[0] });
+
+    /////// Update state with the result.
+    this.setState({ proposal_by: valueOfProposalBy });
+    this.setState({ proposal_title: valueOfProposalTitle });
+    this.setState({ proposal_content: valueOfProposalContent });
+
+    /////// List of result of executing createProposer function 
+    this.state.proposal_by_list.push(valueOfProposalBy);                                  // Push to this.state.proposer_name_list
+    this.setState({ proposal_by_list: this.state.proposal_by_list });       // Save this.state.proposer_name_list which is pushed
+    this.state.proposal_title_list.push(valueOfProposalTitle);              // Push to this.state.proposer_address_list
+    this.setState({ proposal_title_list: this.state.proposal_title_list }); // Save this.state.proposer_address_list which is pushed
+    this.state.proposal_content_list.push(valueOfProposalContent);              // Push to this.state.proposer_address_list
+    this.setState({ proposal_content_list: this.state.proposal_content_list }); // Save this.state.proposer_address_list which is pushed
+  }
 
 
   // send() {
@@ -479,7 +547,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call } = this.state;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -511,16 +579,18 @@ class App extends Component {
           </div>
 
           <div className={styles.widgets}>
-            {this.state.proposer_name_list.map( (proposer_name_list, i) => {
-              return (
-                <Card width={'420px'} bg="primary">
-                  <ul>
-                    <li key={i}>{proposer_name_list}</li>
-                    <li key={i}>{proposer_address_list}</li>
-                  </ul>
-                </Card>
-              )
-            })}
+            <Card width={'420px'} bg="primary">
+              {this.state.proposer_name_list.map( (proposer_name_list, i) => {
+                return (
+                  <div key={i}>{proposer_name_list}</div>
+                )
+              })}
+              {this.state.proposer_address_list.map( (proposer_address_list, i) => {
+                return (
+                  <div key={i}>{proposer_address_list}</div>
+                )
+              })}
+            </Card>
           </div>
 
 
@@ -538,6 +608,36 @@ class App extends Component {
               {proposer_name_call}
               {proposer_address_call}
             </Card>
+          </div>
+
+
+          <div className={styles.widgets}>
+            <Card width={'420px'} bg="primary">
+              <p>Proposer's address of proposal</p>
+              <input type="text" value={this.state.valueOfProposalBy} onChange={this.handleInputProposalBy} />
+
+              <p>Proposal Title</p>
+              <input type="text" value={this.state.valueOfProposalTitle} onChange={this.handleInputProposalTitle} />
+
+              <p>Proposal Content</p>
+              <input type="text" value={this.state.valueOfProposalContent} onChange={this.handleInputProposalContent} />
+
+              <Button onClick={this.sendCreateProposal}>SEND（createProposal）</Button>
+            </Card>
+          </div>
+
+          <div className={styles.widgets}>
+            {this.state.proposal_by_list.map( (proposal_by_list, i) => {
+              return (
+                <Card width={'420px'} bg="primary">
+                  <ul>
+                    <li key={i}>{proposal_by_list}</li>
+                    <li key={i}>{proposal_title_list}</li>
+                    <li key={i}>{proposal_content_list}</li>
+                  </ul>
+                </Card>
+              )
+            })}
           </div>
         </div>
       )}
