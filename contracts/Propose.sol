@@ -12,7 +12,7 @@ contract Propose is Initializable {
     struct Proposer {
         string proposerName;      // name of person who propose
         address proposerAddress;  // address of person who propose
-        //mapping (uint256 => Proposal) proposals;
+        //mapping (uint256 => Proposal) proposals;  // proposals[index].proposals[uint256]
     }
     Proposer[] public proposers;  // e.g) proposers[index].proposerName
 

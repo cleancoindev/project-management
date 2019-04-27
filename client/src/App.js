@@ -88,7 +88,6 @@ class App extends Component {
     console.log("=== [handleInput]： value ===", value);
   }
 
-
   handleInputProposerAddress({ target: { value } }) {
     this.setState({ valueOfProposerAddress: value });
     console.log("=== [handleInputProposerAddress]： valueOfProposerAddress ===", value); 
@@ -125,13 +124,12 @@ class App extends Component {
     this.setState({ proposer_address_list: this.state.proposer_address_list }); // Save this.state.proposer_address_list which is pushed
   }  
 
-
   handleInputGetProposer({ target: { value } }) {
     this.setState({ valueOfProposerId: value });
     console.log("=== [handleInputGetProposer]： value ===", value); 
   }
 
-    sendGetProposer = async (_proposerId) => {
+  sendGetProposer = async (_proposerId) => {
     const { project, accounts, value } = this.state;
 
     this.setState({
@@ -151,13 +149,6 @@ class App extends Component {
     this.setState({ proposer_name_call: response._proposerName });
     this.setState({ proposer_address_call: response._proposerAddress });
   }  
-
-
-
-
-
-
-
 
   handleInputProposalBy({ target: { value } }) {
     this.setState({ valueOfProposalBy: value });
@@ -183,7 +174,6 @@ class App extends Component {
       valueOfProposalTitle: '',
       valueOfProposalContent: ''
     });
-
 
     const response_1 = await project.methods.createProposal(valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent).send({ from: accounts[0] })
 
