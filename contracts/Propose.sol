@@ -21,6 +21,7 @@ contract Propose is Initializable {
         address proposalBy;
         string proposalTitle;
         string proposalContent;
+        uint256 votingCountOfProposal;  // Count voting status of proposal
     }
     Proposal[] public proposals;  // e.g) proposal[index].name
 
@@ -102,13 +103,15 @@ contract Propose is Initializable {
     function createProposal(
         address _proposalBy,
         string memory _proposalTitle,
-        string memory _proposalContent
+        string memory _proposalContent,
+        uint256 _votingCountOfProposal
     ) public returns (address, string memory, string memory) 
     {
         Proposal memory proposal = Proposal({
             proposalBy: _proposalBy,
             proposalTitle: _proposalTitle,
-            proposalContent: _proposalContent
+            proposalContent: _proposalContent,
+            votingCountOfProposal: _votingCountOfProposal
         });
         proposals.push(proposal);
 
@@ -121,6 +124,7 @@ contract Propose is Initializable {
         proposal.proposalBy = proposals[_proposalId].proposalBy;
         proposal.proposalTitle = proposals[_proposalId].proposalTitle;
         proposal.proposalContent = proposals[_proposalId].proposalContent;
+        proposal.votingCountOfProposal = proposals[_proposalId].votingCountOfProposal;
 
         return true;
     }
@@ -147,4 +151,23 @@ contract Propose is Initializable {
     function getNumberOfTotalProposal() public view returns (uint) {
         return proposals.length;
     }
+
+
+
+    /* @notice Voting status of proposal (count of voting per proposal) */
+    function votingStatus(uint256 _proposalId) public view returns (uint256) {
+        Proposal memory proposal = proposals[_proposalId];
+        //proposal.proposalBy = proposals[_proposalId].proposalBy;
+        //proposal.proposalTitle = proposals[_proposalId].proposalTitle;
+        //proposal.proposalContent = proposals[_proposalId].proposalContent;
+        proposal.votingCountOfProposal = proposals[_proposalId].votingCountOfProposal;
+
+        return proposal.votingCountOfProposal;
+    }
+
+    /* @notice New Voting (Who is voting) */
+    function newVoting(address _proposerAddress) public view returns (address) {
+        return _proposerAddress;
+    }
+
 }
