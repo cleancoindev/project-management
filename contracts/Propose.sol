@@ -105,7 +105,7 @@ contract Propose is Initializable {
         string memory _proposalTitle,
         string memory _proposalContent,
         uint256 _votingCountOfProposal
-    ) public returns (address, string memory, string memory) 
+    ) public returns (address, string memory, string memory, uint256) 
     {
         Proposal memory proposal = Proposal({
             proposalBy: _proposalBy,
@@ -115,7 +115,7 @@ contract Propose is Initializable {
         });
         proposals.push(proposal);
 
-        return (_proposalBy, _proposalTitle, _proposalContent);
+        return (_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal);
     }
 
     /* @notice Save new proposal */
