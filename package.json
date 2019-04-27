@@ -9,6 +9,7 @@
     "client": "cd client && npm run start",
     "console": "truffle console --network development",
     "session": "zos session --network development --expires 7200",
+    "test": "truffle test/*",
     "migrate": "truffle migrate --reset --network development",
     "migrate:kovan": "truffle migrate --reset --network kovan"
   },

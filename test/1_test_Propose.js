@@ -12,7 +12,7 @@ contract('Propose', (accounts) => {
 
     it('Execute getNumberOfTotalProposer function', async () => {
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
-        response = await contract.methods.getNumberOfTotalProposer().call();
+        const response = await contract.methods.getNumberOfTotalProposer().call();
 
         // Debug
         console.log('=== response of getNumberOfTotalProposer function ===', response);  // Result: OK
@@ -31,7 +31,7 @@ contract('Propose', (accounts) => {
 
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
         //response = await contract.methods.createProposer(proposerName, proposerAddress, proposalTitle, proposalContent).send({ from: accounts[0] });
-        response = await contract.methods.createProposer(proposerName, proposerAddress).send({ from: accounts[0] });
+        const response = await contract.methods.createProposer(proposerName, proposerAddress).send({ from: accounts[0] });
 
         // Debug
         console.log('=== response of createProposer function ===', response);  // Result: OK
@@ -43,13 +43,13 @@ contract('Propose', (accounts) => {
 
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
         //response_1 = await contract.methods.createProposer(proposerName, proposerAddress, proposalTitle, proposalContent).send({ from: accounts[0] });
-        response_1 = await contract.methods.createProposer(_proposerName, _proposerAddress).send({ from: accounts[0] });
+        const response_1 = await contract.methods.createProposer(_proposerName, _proposerAddress).send({ from: accounts[0] });
 
         //proposerId = 0
-        proposerId = await contract.methods.getProposerId().call();
+        const proposerId = await contract.methods.getProposerId().call();
         console.log('=== response of getProposerId function ===', proposerId);  // Result: OK
         
-        response_2 = await contract.methods.saveProposer(proposerId).send({ from: accounts[0] });
+        const response_2 = await contract.methods.saveProposer(proposerId).send({ from: accounts[0] });
         console.log('=== response of saveProposer function ===', response_2);  // Result: OK
     })
 
@@ -72,12 +72,13 @@ contract('Propose', (accounts) => {
     const proposalBy = "0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b"
     const proposalTitle = "This is proposalTitle"
     const proposalContent = "This is proposalContent"
+    const votingCountOfProposal = 0
 
-    it('Execute createProposal function', async (_proposalBy=proposalBy, _proposalTitle=proposalTitle, _proposalContent=proposalContent) => {
+    it('Execute createProposal function', async (_proposalBy=proposalBy, _proposalTitle=proposalTitle, _proposalContent=proposalContent, _votingCountOfProposal=votingCountOfProposal) => {
   
         const accounts = await web3.eth.getAccounts();
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
-        const response = await contract.methods.createProposal(_proposalBy, _proposalTitle, _proposalContent).send({ from: accounts[0] });
+        const response = await contract.methods.createProposal(_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal).send({ from: accounts[0] });
         //const response = await contract.methods.createProposal("0xfed9ead1d8b7d7e7563903c3120c9b58e5c5d5aa", "This is proposalTitle", "This is proposalContent").send({ from: accounts[0] });
 
         // Debug
@@ -85,11 +86,11 @@ contract('Propose', (accounts) => {
     })
 
     // Fail
-    it('Execute saveProposal function', async (_proposalBy=proposalBy, _proposalTitle=proposalTitle, _proposalContent=proposalContent) => {
+    it('Execute saveProposal function', async (_proposalBy=proposalBy, _proposalTitle=proposalTitle, _proposalContent=proposalContent, _votingCountOfProposal=votingCountOfProposal) => {
         const accounts = await web3.eth.getAccounts();
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
         //const response = await contract.methods.createProposal("テスト", "テスト").send({ from: accounts[0] });
-        const response_1 = await contract.methods.createProposal(_proposalBy, _proposalTitle, _proposalContent).send({ from: accounts[0] });
+        const response_1 = await contract.methods.createProposal(_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal).send({ from: accounts[0] });
 
         const _proposalId = await contract.methods.getProposalId().call();
         //const _proposalId = 0
