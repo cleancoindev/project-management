@@ -54,12 +54,17 @@ class App extends Component {
       proposal_by: '',
       proposal_title: '',
       proposal_content: '',
+      proposal_voting_count: '',
+
       valueOfProposalBy: '',
       valueOfProposalTitle: '',
       valueOfProposalContent: '',
+      valueOfProposalVotingCount: '',
+      
       proposal_by_list: [],
       proposal_title_list: [],
       proposal_content_list: [],
+      proposal_voting_count_list: [],
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -72,6 +77,7 @@ class App extends Component {
     this.handleInputProposalBy = this.handleInputProposalBy.bind(this);
     this.handleInputProposalTitle = this.handleInputProposalTitle.bind(this);
     this.handleInputProposalContent = this.handleInputProposalContent.bind(this);
+    this.handleInputProposalVotingCount = this.handleInputProposalVotingCount.bind(this);
     this.sendCreateProposal = this.sendCreateProposal.bind(this);
   }
 
@@ -162,29 +168,34 @@ class App extends Component {
     this.setState({ valueOfProposalContent: value });
   }
 
-  sendCreateProposal = async (_proposalBy, _proposalTitle, _proposalContent) => {
-    const { project, accounts, proposal_by, proposal_title, proposal_content, valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent} = this.state;
+  handleInputProposalVotingCount({ target: { value } }) {
+    this.setState({ valueOfProposalVotingCount: value });
+  }
 
-    this.setState({
-      proposal_by: valueOfProposalBy,
-      proposal_title: valueOfProposalTitle,
-      proposal_content: valueOfProposalContent,
+  sendCreateProposal = async (_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal) => {
+    const { project, accounts, proposal_by, proposal_title, proposal_content, valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent, valueOfProposalVotingCount } = this.state;
 
-      valueOfProposalBy: '',
-      valueOfProposalTitle: '',
-      valueOfProposalContent: ''
-    });
-
-    const response_1 = await project.methods.createProposal(valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent).send({ from: accounts[0] })
+    const response_1 = await project.methods.createProposal(valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent, valueOfProposalVotingCount).send({ from: accounts[0] })
 
     const proposalId = await project.methods.getProposalId().call();
         
     const response_2 = await project.methods.saveProposal(proposalId).send({ from: accounts[0] });
 
     /////// Update state with the result.
-    this.setState({ proposal_by: valueOfProposalBy });
-    this.setState({ proposal_title: valueOfProposalTitle });
-    this.setState({ proposal_content: valueOfProposalContent });
+    //this.setState({ proposal_by: valueOfProposalBy });
+    //this.setState({ proposal_title: valueOfProposalTitle });
+    //this.setState({ proposal_content: valueOfProposalContent });
+    this.setState({
+      proposal_by: valueOfProposalBy,
+      proposal_title: valueOfProposalTitle,
+      proposal_content: valueOfProposalContent,
+      proposal_voting_count: valueOfProposalVotingCount,
+
+      valueOfProposalBy: '',
+      valueOfProposalTitle: '',
+      valueOfProposalContent: '',
+      valueOfProposalVotingCount: ''
+    });
 
     /////// List of result of executing createProposer function 
     this.state.proposal_by_list.push(valueOfProposalBy);                                  // Push to this.state.proposer_name_list
@@ -193,6 +204,8 @@ class App extends Component {
     this.setState({ proposal_title_list: this.state.proposal_title_list }); // Save this.state.proposer_address_list which is pushed
     this.state.proposal_content_list.push(valueOfProposalContent);              // Push to this.state.proposer_address_list
     this.setState({ proposal_content_list: this.state.proposal_content_list }); // Save this.state.proposer_address_list which is pushed
+    this.state.proposal_voting_count_list.push(valueOfProposalVotingCount);
+    this.setState({ proposal_voting_count_list: this.state.proposal_voting_count_list });
   }
 
 
@@ -537,7 +550,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list } = this.state;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -610,7 +623,22 @@ class App extends Component {
               <p>Proposal Content</p>
               <input type="text" value={this.state.valueOfProposalContent} onChange={this.handleInputProposalContent} />
 
+              <p>Proposal Voting Count</p>
+              <input type="text" value={this.state.valueOfProposalVotingCount} onChange={this.handleInputProposalVotingCount} />
+
               <Button onClick={this.sendCreateProposal}>SEND（createProposal）</Button>
+            </Card>
+          </div>
+
+          <div className={styles.widgets}>
+            <Card width={'420px'} bg="primary">
+              <h3>Recent Proposal</h3>
+              <ul>
+                <li>{ proposal_by }</li>
+                <li>{ proposal_title }</li>
+                <li>{ proposal_content }</li>
+                <li>{ proposal_voting_count }</li>
+              </ul>
             </Card>
           </div>
 
@@ -618,10 +646,12 @@ class App extends Component {
             {this.state.proposal_by_list.map( (proposal_by_list, i) => {
               return (
                 <Card width={'420px'} bg="primary">
+                  <h3>Proposal Index (Include past proposal)</h3>
                   <ul>
                     <li key={i}>{proposal_by_list}</li>
                     <li key={i}>{proposal_title_list}</li>
                     <li key={i}>{proposal_content_list}</li>
+                    <li key={i}>{proposal_voting_count_list}</li>
                   </ul>
                 </Card>
               )
