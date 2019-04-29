@@ -104,6 +104,24 @@ contract('Propose', (accounts) => {
     })
 
 
+    it('Execute votingStatus function', async () => {
+        const accounts = await web3.eth.getAccounts();
+        const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
+
+        const _proposalId = 0;  // for test number
+        const response_1 = await contract.methods.votingStatus(_proposalId).call();
+
+        console.log('=== response of votingStatus function ===', response_1);  // Result: OK
+    })
 
 
+    it('Execute newVoting function', async () => {
+        const accounts = await web3.eth.getAccounts();
+        const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
+
+        const _proposalId = 0;  // for test number
+        response_2 = await contract.methods.newVoting(_proposalId).send({ from: accounts[0] })
+
+        console.log('=== response of newVoting function ===', response_2);  // Result: OK
+    })
 })
