@@ -65,6 +65,10 @@ class App extends Component {
       proposal_title_list: [],
       proposal_content_list: [],
       proposal_voting_count_list: [],
+
+      ////// Voting
+      new_voting_proposal_id: 0,
+      valueOfNewVotingProposerId: 0
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -79,6 +83,9 @@ class App extends Component {
     this.handleInputProposalContent = this.handleInputProposalContent.bind(this);
     this.handleInputProposalVotingCount = this.handleInputProposalVotingCount.bind(this);
     this.sendCreateProposal = this.sendCreateProposal.bind(this);
+
+    this.handleInputNewVoting = this.handleInputNewVoting.bind(this);
+    this.sendNewVoting = this.sendNewVoting.bind(this);
   }
 
 
@@ -208,6 +215,23 @@ class App extends Component {
     this.setState({ proposal_voting_count_list: this.state.proposal_voting_count_list });
   }
 
+
+
+
+  handleInputNewVoting({ target: { value } }) {
+    this.setState({ valueOfNewVotingProposerId: Number(value) });
+  }
+
+  sendNewVoting = async (_proposalId) => {
+    const { project, accounts, new_voting_proposal_id, valueOfNewVotingProposerId } = this.state;
+    
+    const response = await project.methods.newVoting(valueOfNewVotingProposerId).send({ from: accounts[0] });
+
+    this.setState({
+      new_voting_proposal_id: Number(valueOfNewVotingProposerId),
+      valueOfNewVotingProposerId: 0,
+    });
+  }
 
   // send() {
   //   const { value } = this.state;
@@ -656,6 +680,26 @@ class App extends Component {
                 </Card>
               )
             })}
+          </div>
+
+
+          <div className={styles.widgets}>
+            <Card width={'420px'} bg="primary">
+              <h3>New Voting</h3>
+
+              <p>Proposal Id which you want voting</p>
+              <input type="text" value={this.state.valueOfNewVotingProposerId} onChange={this.handleInputNewVoting} />
+
+              <Button onClick={this.sendNewVoting}>SEND（newVoting function）</Button>
+            </Card>
+          </div>
+
+          <div className={styles.widgets}>
+            <Card width={'420px'} bg="primary">
+              <h3>Voting Status</h3>
+              {proposer_name_call}
+              {proposer_address_call}
+            </Card>
           </div>
         </div>
       )}
