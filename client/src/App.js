@@ -66,9 +66,13 @@ class App extends Component {
       proposal_content_list: [],
       proposal_voting_count_list: [],
 
-      ////// Voting
+      ////// newVoting
       new_voting_proposal_id: 0,
-      valueOfNewVotingProposerId: 0
+      valueOfNewVotingProposerId: 0,
+
+      ////// votingStatus
+      voting_status_proposal_id: 0,
+      valueOfVotingStatusProposerId: 0,
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -86,6 +90,9 @@ class App extends Component {
 
     this.handleInputNewVoting = this.handleInputNewVoting.bind(this);
     this.sendNewVoting = this.sendNewVoting.bind(this);
+
+    this.handleInputVotingStatus = this.handleInputVotingStatus.bind(this);
+    this.sendVotingStatus = this.sendVotingStatus.bind(this);
   }
 
 
@@ -216,8 +223,6 @@ class App extends Component {
   }
 
 
-
-
   handleInputNewVoting({ target: { value } }) {
     this.setState({ valueOfNewVotingProposerId: Number(value) });
   }
@@ -230,6 +235,23 @@ class App extends Component {
     this.setState({
       new_voting_proposal_id: Number(valueOfNewVotingProposerId),
       valueOfNewVotingProposerId: 0,
+    });
+  }
+
+
+  handleInputVotingStatus({ target: { value } }) {
+    this.setState({ valueOfVotingStatusProposerId: Number(value) });
+  }
+
+  sendVotingStatus = async (_proposalId) => {
+    const { project, accounts, voting_status_proposal_id, valueOfVotingStatusProposerId } = this.state;
+    
+    const response = await project.methods.votingStatus(valueOfVotingStatusProposerId).call();
+
+    this.setState({
+      voting_status_proposal_id: Number(valueOfVotingStatusProposerId),
+      valueOfVotingStatusProposerId: 0,
+      voting_status: response
     });
   }
 
@@ -574,7 +596,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list } = this.state;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -696,9 +718,15 @@ class App extends Component {
 
           <div className={styles.widgets}>
             <Card width={'420px'} bg="primary">
-              <h3>Voting Status</h3>
-              {proposer_name_call}
-              {proposer_address_call}
+              <h3>Voting Status of Proposal Id which you want to know</h3>
+              <input type="text" value={this.state.valueOfVotingStatusProposerId} onChange={this.handleInputVotingStatus} />
+
+              <Button onClick={this.sendVotingStatus}>SEND（votingStatus function）</Button>
+
+              <hr />
+
+              <h3>Voting Status of Proposal which you want to know</h3>
+              {voting_status}
             </Card>
           </div>
         </div>
