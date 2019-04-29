@@ -26,7 +26,6 @@ contract Propose is Initializable {
     Proposal[] public proposals;  // e.g) proposal[index].name
 
 
-
     // event CreateProposer(
     //     uint256 indexed _proposerId, 
     //     address indexed _proposerAddress, 
@@ -166,8 +165,19 @@ contract Propose is Initializable {
     }
 
     /* @notice New Voting (Who is voting) */
-    function newVoting(address _proposerAddress) public view returns (address) {
-        return _proposerAddress;
+    function newVoting(uint256 _proposalId) public returns (bool) {
+    
+        uint currentVotingCount;
+
+        currentVotingCount = votingStatus(_proposalId);
+
+        // number of votes increase 1 depend on executing newVoting 
+        currentVotingCount++;
+
+        Proposal storage proposal = proposals[_proposalId];
+        proposal.votingCountOfProposal = currentVotingCount;
+
+        return true;
     }
 
 }
