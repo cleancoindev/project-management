@@ -21,10 +21,13 @@ contract Propose is Initializable {
         address proposalBy;
         string proposalTitle;
         string proposalContent;
-        uint256 votingCountOfProposal;  // Count voting status of proposal
+        uint256 votingCountOfProposal;             // Count voting status of proposal
+        //mapping (address => adoptState) adopts;  // After voting, whether proposal is adopted or not
+        bool adoptStatus;                          // After voting, whether proposal is adopted or not
     }
     Proposal[] public proposals;  // e.g) proposal[index].name
 
+    //enum adoptState { Adopted, NowOnVotingTime, NotAdopted }  // Status of whether proposal is adopted or not
 
     // event CreateProposer(
     //     uint256 indexed _proposerId, 
@@ -104,17 +107,21 @@ contract Propose is Initializable {
         string memory _proposalTitle,
         string memory _proposalContent,
         uint256 _votingCountOfProposal
-    ) public returns (address, string memory, string memory, uint256) 
+    ) public returns (address, string memory, string memory, uint256, bool) 
     {
+        bool _adoptStatus = false; // Default value is NotAdopt        
+
         Proposal memory proposal = Proposal({
             proposalBy: _proposalBy,
             proposalTitle: _proposalTitle,
             proposalContent: _proposalContent,
-            votingCountOfProposal: _votingCountOfProposal
+            votingCountOfProposal: _votingCountOfProposal,
+            adoptStatus: _adoptStatus                      // Default value is NotAdopt
+            //adoptState: adopts[_proposalBy].NotAdopted  // Default value is NotAdopt
         });
         proposals.push(proposal);
 
-        return (_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal);
+        return (_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal, _adoptStatus);
     }
 
     /* @notice Save new proposal */
@@ -124,6 +131,7 @@ contract Propose is Initializable {
         proposal.proposalTitle = proposals[_proposalId].proposalTitle;
         proposal.proposalContent = proposals[_proposalId].proposalContent;
         proposal.votingCountOfProposal = proposals[_proposalId].votingCountOfProposal;
+        proposal.adoptStatus = proposals[_proposalId].adoptStatus;  // Default value is NotAdopt
 
         return true;
     }
