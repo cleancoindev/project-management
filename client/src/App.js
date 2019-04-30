@@ -195,6 +195,10 @@ class App extends Component {
         
     const response_2 = await project.methods.saveProposal(proposalId).send({ from: accounts[0] });
 
+    console.log('=== response of createProposal function ===', response_1);  // Debug
+    console.log('=== response of saveProposal function ===', response_2);  // Debug
+
+
     /////// Update state with the result.
     //this.setState({ proposal_by: valueOfProposalBy });
     //this.setState({ proposal_title: valueOfProposalTitle });
@@ -231,6 +235,7 @@ class App extends Component {
     const { project, accounts, new_voting_proposal_id, valueOfNewVotingProposerId } = this.state;
     
     const response = await project.methods.newVoting(valueOfNewVotingProposerId).send({ from: accounts[0] });
+    console.log('=== response of newVoting function ===', response);  // Debug
 
     this.setState({
       new_voting_proposal_id: Number(valueOfNewVotingProposerId),
@@ -247,6 +252,7 @@ class App extends Component {
     const { project, accounts, voting_status_proposal_id, valueOfVotingStatusProposerId } = this.state;
     
     const response = await project.methods.votingStatus(valueOfVotingStatusProposerId).call();
+    console.log('=== response of votingStatus function ===', response);  // Debug
 
     this.setState({
       voting_status_proposal_id: Number(valueOfVotingStatusProposerId),
