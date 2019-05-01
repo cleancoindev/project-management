@@ -55,6 +55,7 @@ class App extends Component {
       proposal_title: '',
       proposal_content: '',
       proposal_voting_count: '',
+      adopt_status: false,
 
       valueOfProposalBy: '',
       valueOfProposalTitle: '',
@@ -65,6 +66,7 @@ class App extends Component {
       proposal_title_list: [],
       proposal_content_list: [],
       proposal_voting_count_list: [],
+      adopt_status_list: [],
 
       ////// newVoting
       new_voting_proposal_id: 0,
@@ -197,6 +199,8 @@ class App extends Component {
 
     console.log('=== response of createProposal function ===', response_1);  // Debug
     console.log('=== response of saveProposal function ===', response_2);  // Debug
+    console.log('=== response of adoptStatus of saveProposal function ===', response_2.events.SaveProposal.returnValues.adoptStatus);  // Debug
+    console.log('=== response of transactionHash of saveProposal function ===', response_2.transactionHash);  // Debug
 
 
     /////// Update state with the result.
@@ -208,6 +212,7 @@ class App extends Component {
       proposal_title: valueOfProposalTitle,
       proposal_content: valueOfProposalContent,
       proposal_voting_count: valueOfProposalVotingCount,
+      adopt_status: response_2.events.SaveProposal.returnValues.adoptStatus, // Get return value in Chrome console through executing event and emit 
 
       valueOfProposalBy: '',
       valueOfProposalTitle: '',
@@ -224,6 +229,8 @@ class App extends Component {
     this.setState({ proposal_content_list: this.state.proposal_content_list }); // Save this.state.proposer_address_list which is pushed
     this.state.proposal_voting_count_list.push(valueOfProposalVotingCount);
     this.setState({ proposal_voting_count_list: this.state.proposal_voting_count_list });
+    this.state.adopt_status_list.push(response_2.events.SaveProposal.returnValues.adoptStatus);
+    this.setState({ adopt_status_list: this.state.adopt_status_list });
   }
 
 
@@ -602,7 +609,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status } = this.state;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -690,6 +697,7 @@ class App extends Component {
                 <li>{ proposal_title }</li>
                 <li>{ proposal_content }</li>
                 <li>{ proposal_voting_count }</li>
+                <li>{ adopt_status }</li>
               </ul>
             </Card>
           </div>
@@ -704,6 +712,7 @@ class App extends Component {
                     <li key={i}>{proposal_title_list}</li>
                     <li key={i}>{proposal_content_list}</li>
                     <li key={i}>{proposal_voting_count_list}</li>
+                    <li key={i}>{adopt_status}</li>
                   </ul>
                 </Card>
               )
