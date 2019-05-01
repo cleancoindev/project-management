@@ -55,7 +55,8 @@ class App extends Component {
       proposal_title: '',
       proposal_content: '',
       proposal_voting_count: '',
-      adopt_status: false,
+      adopt_status: '',
+      //adopt_status: false,
 
       valueOfProposalBy: '',
       valueOfProposalTitle: '',
@@ -197,10 +198,20 @@ class App extends Component {
         
     const response_2 = await project.methods.saveProposal(proposalId).send({ from: accounts[0] });
 
+    switch(response_2.events.SaveProposal.returnValues.adoptStatus) {
+      case true:
+        this.setState({ adopt_status: 'Adopted' });
+        break;
+      case false:
+        this.setState({ adopt_status: 'Not adopted' });
+        break;
+    }
+
     console.log('=== response of createProposal function ===', response_1);  // Debug
     console.log('=== response of saveProposal function ===', response_2);  // Debug
     console.log('=== response of adoptStatus of saveProposal function ===', response_2.events.SaveProposal.returnValues.adoptStatus);  // Debug
     console.log('=== response of transactionHash of saveProposal function ===', response_2.transactionHash);  // Debug
+
 
 
     /////// Update state with the result.
@@ -212,7 +223,7 @@ class App extends Component {
       proposal_title: valueOfProposalTitle,
       proposal_content: valueOfProposalContent,
       proposal_voting_count: valueOfProposalVotingCount,
-      adopt_status: response_2.events.SaveProposal.returnValues.adoptStatus, // Get return value in Chrome console through executing event and emit 
+      //adopt_status: response_2.events.SaveProposal.returnValues.adoptStatus, // Get return value in Chrome console through executing event and emit 
 
       valueOfProposalBy: '',
       valueOfProposalTitle: '',
