@@ -29,12 +29,13 @@ contract Propose is Initializable {
 
     //enum adoptState { Adopted, NowOnVotingTime, NotAdopted }  // Status of whether proposal is adopted or not
 
-    // event CreateProposer(
-    //     uint256 indexed _proposerId, 
-    //     address indexed _proposerAddress, 
-    //     string indexed _name, 
-    //     string indexed _content
-    // );
+    event SaveProposal(
+        address indexed proposalBy, 
+        string indexed proposalTitle, 
+        string indexed proposalContent, 
+        uint256 votingCountOfProposal,
+        bool adoptStatus
+    );
     
     //it keeps a count to demonstrate stage changes
     uint private countPropose;
@@ -132,6 +133,14 @@ contract Propose is Initializable {
         proposal.proposalContent = proposals[_proposalId].proposalContent;
         proposal.votingCountOfProposal = proposals[_proposalId].votingCountOfProposal;
         proposal.adoptStatus = proposals[_proposalId].adoptStatus;  // Default value is NotAdopt
+
+        emit SaveProposal(
+            proposals[_proposalId].proposalBy, 
+            proposals[_proposalId].proposalTitle,
+            proposals[_proposalId].proposalContent,
+            proposals[_proposalId].votingCountOfProposal,
+            proposals[_proposalId].adoptStatus   
+        );
 
         return true;
     }
