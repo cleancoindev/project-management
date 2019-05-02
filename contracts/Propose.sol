@@ -113,7 +113,7 @@ contract Propose is Initializable {
     ) public returns (address, string memory, string memory, uint256, bool, uint256) 
     {
         bool _adoptStatus = false; // Default value is NotAdopt 
-        uint256 _budget = 0;       // Default value is NotAdopt
+        uint256 _budget = 0;       // Default value is 0
 
         Proposal memory proposal = Proposal({
             proposalBy: _proposalBy,
@@ -122,7 +122,7 @@ contract Propose is Initializable {
             votingCountOfProposal: _votingCountOfProposal,
             adoptStatus: _adoptStatus,                    // Default value is NotAdopt
             //adoptState: adopts[_proposalBy].NotAdopted  // Default value is NotAdopt
-            budget: _budget
+            budget: _budget                               // Default value is 0
         });
         proposals.push(proposal);
 
