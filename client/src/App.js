@@ -624,7 +624,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, budget, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status, budget_list } = this.state;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, budget, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status, adopt_status_list, budget_list } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -728,7 +728,7 @@ class App extends Component {
                     <li key={i}>{proposal_title_list}</li>
                     <li key={i}>{proposal_content_list}</li>
                     <li key={i}>{proposal_voting_count_list}</li>
-                    <li key={i}>{adopt_status}</li>
+                    <li key={i}>{ adopt_status_list }</li>
                     <li key={i}>{ budget_list }</li>
                   </ul>
                 </Card>
