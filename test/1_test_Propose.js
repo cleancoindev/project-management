@@ -74,7 +74,7 @@ contract('Propose', (accounts) => {
     const proposalContent = "This is proposalContent"
     const votingCountOfProposal = 0
 
-    it('Execute createProposal function', async () => {
+    it('Execute createProposal function', async (_proposalBy=proposalBy, _proposalTitle=proposalTitle, _proposalContent=proposalContent, _votingCountOfProposal=votingCountOfProposal) => {
   
         const accounts = await web3.eth.getAccounts();
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
@@ -89,7 +89,7 @@ contract('Propose', (accounts) => {
     it('Execute saveProposal function', async (_proposalBy=proposalBy, _proposalTitle=proposalTitle, _proposalContent=proposalContent, _votingCountOfProposal=votingCountOfProposal) => {
         const accounts = await web3.eth.getAccounts();
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
-        //const response = await contract.methods.createProposal("テスト", "テスト").send({ from: accounts[0] });
+        //const response = await contract.methods.createProposal("0x3e08b4eca537b3908bd40dc9d2d1c60bc52a552b", "テスト", "テスト", 0).send({ from: accounts[0] });
         const response_1 = await contract.methods.createProposal(_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal).send({ from: accounts[0] });
 
         const _proposalId = await contract.methods.getProposalId().call();
@@ -101,6 +101,9 @@ contract('Propose', (accounts) => {
 
         // Debug
         console.log('=== response of saveProposal function ===', response_2);  // Result: OK
+
+        const event = response_2.events.SaveProposal.returnValues.adoptStatus;
+        console.log('=== Check event value of SaveProposal function ===', event);  // Result: false or true
     })
 
 
