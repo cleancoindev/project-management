@@ -24,7 +24,7 @@ contract Propose is Initializable {
         uint256 votingCountOfProposal;             // Count voting status of proposal
         //mapping (address => adoptState) adopts;  // After voting, whether proposal is adopted or not
         bool adoptStatus;                          // After voting, whether proposal is adopted or not
-        mapping (address => Budget) budgets;
+        mapping (uint => Budget) budgets;
         //uint256 budget;
         //uint256 askingPriceOfbudget;
     }
@@ -34,7 +34,7 @@ contract Propose is Initializable {
 
     struct Budget {
         uint256 budget;
-        uint256 askingPriceOfbudget;
+        uint256 askingPriceOfBudget;
     }
     
 
@@ -165,6 +165,24 @@ contract Propose is Initializable {
         return true;
     }
 
+
+    /* @notice Create new asking price of budget */ 
+    function createAskingPriceOfBudget(
+        uint256 _proposalId,
+        uint256 _askingPriceOfBudget
+    ) public returns (uint256) 
+    {
+        Budget storage budget = proposals[_proposalId].budgets[_proposalId];
+        budget.askingPriceOfBudget = _askingPriceOfBudget;
+
+        // Budget storage budget = Budget({
+        //     askingPriceOfBudget: _askingPriceOfBudget
+        // });
+
+        return (_askingPriceOfBudget);
+    }
+
+ 
 
 
     /* @notice Get proposerId */
