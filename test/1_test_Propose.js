@@ -74,7 +74,7 @@ contract('Propose', (accounts) => {
     const proposalContent = "This is proposalContent"
     const votingCountOfProposal = 0
 
-    it('Execute createProposal function', async (_proposalBy=proposalBy, _proposalTitle=proposalTitle, _proposalContent=proposalContent, _votingCountOfProposal=votingCountOfProposal) => {
+    it('Execute createProposal function', async () => {
   
         const accounts = await web3.eth.getAccounts();
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);

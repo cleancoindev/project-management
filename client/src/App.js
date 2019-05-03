@@ -57,7 +57,6 @@ class App extends Component {
       proposal_voting_count: '',
       adopt_status: '',
       //adopt_status: false,
-      budget: 0,
 
       valueOfProposalBy: '',
       valueOfProposalTitle: '',
@@ -69,7 +68,15 @@ class App extends Component {
       proposal_content_list: [],
       proposal_voting_count_list: [],
       adopt_status_list: [],
+
+      ////// Budget
+      budget: 0,
+      asking_price_of_budget: 0,
+
+      valueOfAskingPriceOfBudget: '',
+
       budget_list: [],
+      asking_price_of_budget_list: [],
 
       ////// newVoting
       new_voting_proposal_id: 0,
@@ -91,6 +98,7 @@ class App extends Component {
     this.handleInputProposalTitle = this.handleInputProposalTitle.bind(this);
     this.handleInputProposalContent = this.handleInputProposalContent.bind(this);
     this.handleInputProposalVotingCount = this.handleInputProposalVotingCount.bind(this);
+    this.handleInputAskingPriceOfBudget = this.handleInputAskingPriceOfBudget.bind(this);
     this.sendCreateProposal = this.sendCreateProposal.bind(this);
 
     this.handleInputNewVoting = this.handleInputNewVoting.bind(this);
@@ -191,14 +199,20 @@ class App extends Component {
     this.setState({ valueOfProposalVotingCount: value });
   }
 
-  sendCreateProposal = async (_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal) => {
-    const { project, accounts, proposal_by, proposal_title, proposal_content, valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent, valueOfProposalVotingCount } = this.state;
+  handleInputAskingPriceOfBudget({ target: { value } }) {
+    this.setState({ valueOfAskingPriceOfBudget: value });
+  }
+
+  sendCreateProposal = async (_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal, _askingPriceOfBudget) => {
+    const { project, accounts, proposal_by, proposal_title, proposal_content, valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent, valueOfProposalVotingCount, valueOfAskingPriceOfBudget } = this.state;
 
     const response_1 = await project.methods.createProposal(valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent, valueOfProposalVotingCount).send({ from: accounts[0] })
 
     const proposalId = await project.methods.getProposalId().call();
         
     const response_2 = await project.methods.saveProposal(proposalId).send({ from: accounts[0] });
+
+    const response_3 =  await project.methods.createAskingPriceOfBudget(proposalId, valueOfAskingPriceOfBudget).send({ from: accounts[0] });   
 
     switch(response_2.events.SaveProposal.returnValues.adoptStatus) {
       case true:
@@ -211,8 +225,12 @@ class App extends Component {
 
     console.log('=== response of createProposal function ===', response_1);  // Debug
     console.log('=== response of saveProposal function ===', response_2);  // Debug
+    console.log('=== response of createAskingPriceOfBudget function ===', response_3);  // Debug
+
     console.log('=== response of adoptStatus of saveProposal function ===', response_2.events.SaveProposal.returnValues.adoptStatus);  // Debug
     console.log('=== response of budget of saveProposal function ===', response_2.events.SaveProposal.returnValues.budget);  // Debug
+    console.log('=== response of budget of createAskingPriceOfBudget function ===', response_3.events.CreateAskingPriceOfBudget.returnValues.askingPriceOfBudget);  // Debug
+
     console.log('=== response of transactionHash of saveProposal function ===', response_2.transactionHash);  // Debug
 
 
@@ -225,12 +243,13 @@ class App extends Component {
       proposal_title: valueOfProposalTitle,
       proposal_content: valueOfProposalContent,
       proposal_voting_count: valueOfProposalVotingCount,
-      //adopt_status: response_2.events.SaveProposal.returnValues.adoptStatus, // Get return value in Chrome console through executing event and emit 
+      asking_price_of_budget: valueOfAskingPriceOfBudget,
 
       valueOfProposalBy: '',
       valueOfProposalTitle: '',
       valueOfProposalContent: '',
-      valueOfProposalVotingCount: ''
+      valueOfProposalVotingCount: '',
+      valueOfAskingPriceOfBudget: ''
     });
 
     /////// List of result of executing createProposer function 
@@ -244,8 +263,10 @@ class App extends Component {
     this.setState({ proposal_voting_count_list: this.state.proposal_voting_count_list });
     this.state.adopt_status_list.push(this.state.adopt_status);
     this.setState({ adopt_status_list: this.state.adopt_status_list });
-    this.state.budget_list.push(response_2.events.SaveProposal.returnValues.budget);
-    this.setState({ budget_list: this.state.budget_list });
+    //this.state.budget_list.push(response_3.events.CreateAskingPriceOfBudget.returnValues.budget);
+    //this.setState({ budget_list: this.state.budget_list });
+    this.state.asking_price_of_budget_list.push(response_3.events.CreateAskingPriceOfBudget.returnValues.askingPriceOfBudget);
+    this.setState({ asking_price_of_budget_list: this.state.asking_price_of_budget_list });
   }
 
 
@@ -624,7 +645,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, budget, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status, adopt_status_list, budget_list } = this.state;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, budget, asking_price_of_budget, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status, adopt_status_list, budget_list, asking_price_of_budget_list } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -700,6 +721,9 @@ class App extends Component {
               <p>Proposal Voting Count</p>
               <input type="text" value={this.state.valueOfProposalVotingCount} onChange={this.handleInputProposalVotingCount} />
 
+              <p>Asking Price of Budget of this Proposal</p>
+              <input type="text" value={this.state.valueOfAskingPriceOfBudget} onChange={this.handleInputAskingPriceOfBudget} />
+
               <Button onClick={this.sendCreateProposal}>SEND（createProposal）</Button>
             </Card>
           </div>
@@ -714,6 +738,7 @@ class App extends Component {
                 <li>{ proposal_voting_count }</li>
                 <li>{ adopt_status }</li>
                 <li>{ budget }</li>
+                <li>Asking Price of Budget：{ asking_price_of_budget }</li>
               </ul>
             </Card>
           </div>
@@ -730,6 +755,7 @@ class App extends Component {
                     <li key={i}>{proposal_voting_count_list}</li>
                     <li key={i}>{ adopt_status_list }</li>
                     <li key={i}>{ budget_list }</li>
+                    <li key={i}>{ asking_price_of_budget_list }</li>
                   </ul>
                 </Card>
               )
