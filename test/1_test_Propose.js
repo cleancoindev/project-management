@@ -104,6 +104,22 @@ contract('Propose', (accounts) => {
     })
 
 
+    it('Execute createAskingPriceOfBudget function', async () => {
+        const accounts = await web3.eth.getAccounts();
+        const contract = await new web3.eth.Contract(Propose.abi, Propose.address);
+
+        const _proposalId = 0;  // for test number
+        const _askingPriceOfBudget = 100;  // for test number
+        const response = await contract.methods.createAskingPriceOfBudget(_proposalId, _askingPriceOfBudget).send({ from: accounts[0] });
+        const event = response.events.CreateAskingPriceOfBudget.returnValues.askingPriceOfBudget;
+
+        console.log('=== response of createAskingPriceOfBudget function ===', response);  // Result: OK
+        console.log('=== Check event value of createAskingPriceOfBudget function ===', event);  // Result: OK
+
+    })
+
+
+
     it('Execute votingStatus function', async () => {
         const accounts = await web3.eth.getAccounts();
         const contract = await new web3.eth.Contract(Propose.abi, Propose.address);

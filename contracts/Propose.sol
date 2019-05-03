@@ -48,6 +48,10 @@ contract Propose is Initializable {
         //uint256 askingPriceOfbudget
     );
     
+    event CreateAskingPriceOfBudget (uint256 indexed askingPriceOfBudget);
+    
+
+
     //it keeps a count to demonstrate stage changes
     uint private countPropose;
     address private _owner;
@@ -178,6 +182,8 @@ contract Propose is Initializable {
         // Budget storage budget = Budget({
         //     askingPriceOfBudget: _askingPriceOfBudget
         // });
+
+        emit CreateAskingPriceOfBudget(_askingPriceOfBudget);
 
         return (_askingPriceOfBudget);
     }
