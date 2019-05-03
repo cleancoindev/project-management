@@ -24,19 +24,28 @@ contract Propose is Initializable {
         uint256 votingCountOfProposal;             // Count voting status of proposal
         //mapping (address => adoptState) adopts;  // After voting, whether proposal is adopted or not
         bool adoptStatus;                          // After voting, whether proposal is adopted or not
-        uint256 budget;
+        mapping (address => Budget) budgets;
+        //uint256 budget;
+        //uint256 askingPriceOfbudget;
     }
     Proposal[] public proposals;  // e.g) proposal[index].name
 
     //enum adoptState { Adopted, NowOnVotingTime, NotAdopted }  // Status of whether proposal is adopted or not
+
+    struct Budget {
+        uint256 budget;
+        uint256 askingPriceOfbudget;
+    }
+    
 
     event SaveProposal(
         address indexed proposalBy, 
         string indexed proposalTitle, 
         string indexed proposalContent, 
         uint256 votingCountOfProposal,
-        bool adoptStatus,
-        uint256 budget
+        bool adoptStatus
+        //uint256 budget,
+        //uint256 askingPriceOfbudget
     );
     
     //it keeps a count to demonstrate stage changes
@@ -110,7 +119,8 @@ contract Propose is Initializable {
         string memory _proposalTitle,
         string memory _proposalContent,
         uint256 _votingCountOfProposal
-    ) public returns (address, string memory, string memory, uint256, bool, uint256) 
+        //uint256 _askingPriceOfbudget
+    ) public returns (address, string memory, string memory, uint256, bool) 
     {
         bool _adoptStatus = false; // Default value is NotAdopt 
         uint256 _budget = 0;       // Default value is 0
@@ -120,13 +130,15 @@ contract Propose is Initializable {
             proposalTitle: _proposalTitle,
             proposalContent: _proposalContent,
             votingCountOfProposal: _votingCountOfProposal,
-            adoptStatus: _adoptStatus,                    // Default value is NotAdopt
-            //adoptState: adopts[_proposalBy].NotAdopted  // Default value is NotAdopt
-            budget: _budget                               // Default value is 0
+            adoptStatus: _adoptStatus                      // Default value is NotAdopt
+            //adoptState: adopts[_proposalBy].NotAdopted   // Default value is NotAdopt
+            //budget: _budget,                             // Default value is 0
+            //askingPriceOfbudget: _askingPriceOfbudget
         });
         proposals.push(proposal);
 
-        return (_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal, _adoptStatus, _budget);
+        return (_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal, _adoptStatus);
+        //return (_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal, _adoptStatus, _budget, _askingPriceOfbudget);
     }
 
     /* @notice Save new proposal */
@@ -137,15 +149,17 @@ contract Propose is Initializable {
         proposal.proposalContent = proposals[_proposalId].proposalContent;
         proposal.votingCountOfProposal = proposals[_proposalId].votingCountOfProposal;
         proposal.adoptStatus = proposals[_proposalId].adoptStatus;  // Default value is NotAdopt
-        proposal.budget = proposals[_proposalId].budget;
+        //proposal.budget = proposals[_proposalId].budget;
+        //proposal.askingPriceOfbudget = proposals[_proposalId].askingPriceOfbudget;
 
         emit SaveProposal(
             proposals[_proposalId].proposalBy, 
             proposals[_proposalId].proposalTitle,
             proposals[_proposalId].proposalContent,
             proposals[_proposalId].votingCountOfProposal,
-            proposals[_proposalId].adoptStatus,
-            proposals[_proposalId].budget 
+            proposals[_proposalId].adoptStatus
+            //proposals[_proposalId].budget,
+            //proposals[_proposalId].askingPriceOfbudget
         );
 
         return true;
