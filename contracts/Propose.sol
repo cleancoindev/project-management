@@ -56,9 +56,13 @@ contract Propose is Initializable {
     uint private countPropose;
     address private _owner;
 
-    function initialize(uint num) public initializer {
+    // function initialize(uint num) public initializer {
+    //     _owner = msg.sender;
+    //    countPropose = num;
+    // }
+
+    constructor () public {
         _owner = msg.sender;
-       countPropose = num;
     }
 
     /* @notice Check owner address */ 

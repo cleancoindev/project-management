@@ -3,6 +3,7 @@
   "name": "project-management",
   "version": "0.1.0",
   "contracts": {
-    "Propose": "Propose"
+    "Propose": "Propose",
+    "OrganizationToken": "OrganizationToken"
   }
 }
