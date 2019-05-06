@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import getWeb3, { getGanacheWeb3 } from "./utils/getWeb3";
+import getWeb3, { getGanacheWeb3, Web3 } from "./utils/getWeb3";
 import Header from "./components/Header/index.js";
 import Footer from "./components/Footer/index.js";
 import Hero from "./components/Hero/index.js";
@@ -8,7 +8,7 @@ import CounterUI from "./components/Counter/index.js";
 import Wallet from "./components/Wallet/index.js";
 import Project from "./components/Project/index.js";  // Load Project components
 import Instructions from "./components/Instructions/index.js";
-import { Loader, Button, Card } from 'rimble-ui';
+import { Loader, Button, Card, Input } from 'rimble-ui';
 
 import { zeppelinSolidityHotLoaderOptions } from '../config/webpack';
 
@@ -85,6 +85,12 @@ class App extends Component {
       ////// votingStatus
       voting_status_proposal_id: 0,
       valueOfVotingStatusProposerId: 0,
+
+      ////// OrganizationToken
+      valueOfMintBy: '',
+      valueOfMintToken: '',
+      value_of_mint_by: '',
+      value_of_mint_token: ''
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -106,6 +112,9 @@ class App extends Component {
 
     this.handleInputVotingStatus = this.handleInputVotingStatus.bind(this);
     this.sendVotingStatus = this.sendVotingStatus.bind(this);
+
+    this.handleInputMintBy = this.handleInputMintBy.bind(this);
+    this.handleInputMintToken = this.handleInputMintToken.bind(this);
   }
 
 
@@ -304,6 +313,53 @@ class App extends Component {
     });
   }
 
+
+  getTotalSupply = async () => {
+    const { organization_token } = this.state;
+    const response = await organization_token.methods.totalSupply().call();
+    console.log('=== response of totalSupply function ===', response);
+
+    this.setState({ total_supply: response });
+  };
+
+  getBalanceOf = async () => {
+    const { organization_token } = this.state;
+
+    ///// Import Web3 from /utils/getWeb3.js
+    const web3 = new Web3(window.ethereum);
+    const accounts = await web3.eth.getAccounts();
+    const _ownerAddress = accounts[0]
+
+    const response = await organization_token.methods.balanceOf(_ownerAddress).call();
+
+    // Update state with the result.
+    this.setState({ balance_of: response });
+  };
+
+  ////// Send MintToken function
+  handleInputMintBy({ target: { value } }) {
+    this.setState({ valueOfMintBy: value });
+  }
+
+  handleInputMintToken({ target: { value } }) {
+    this.setState({ valueOfMintToken: value });
+  }
+
+  sendMintToken = async (to, value) => {
+    const { organization_token, accounts, valueOfMintBy, valueOfMintToken } = this.state;
+
+    const response = await organization_token.methods.mintToken(valueOfMintBy, valueOfMintToken).send({ from: accounts[0] })
+    console.log('=== response of mintToken function ===', response);
+
+    this.setState({
+      valueOfMintBy: '',
+      valueOfMintToken: '',
+      value_of_mint_by: valueOfMintBy,
+      value_of_mint_token: valueOfMintToken
+    });
+  }
+
+
   // send() {
   //   const { value } = this.state;
   //   this.setState({
@@ -331,13 +387,15 @@ class App extends Component {
     let Counter = {};
     let Wallet = {};
     let Project = {};
+    let OrganizationToken = {};
     try {
       // Counter = require("../../contracts/Counter.sol");
       // Wallet = require("../../contracts/Wallet.sol");
       // Project = require("../../contracts/Propose.sol");
       Counter = require("./contracts/Counter.json");
       Wallet = require("./contracts/Wallet.json");
-      Project = require("./contracts/Propose.json");  // Load ABI of contract of ContactNotebook
+      Project = require("./contracts/Propose.json");  // Load ABI of contract of Propose
+      OrganizationToken = require("./contracts/OrganizationToken.json");  // Load ABI of contract of OrganizationToken
     } catch (e) {
       console.log(e);
     }
@@ -363,6 +421,7 @@ class App extends Component {
         let instance = null;
         let instanceWallet = null;
         let instanceProject = null;
+        let instanceOrganizationToken = null;  // Define variable of instanceOrganizationToken
         let deployedNetwork = null;
         if (Counter.networks) {
           deployedNetwork = Counter.networks[networkId.toString()];
@@ -393,14 +452,24 @@ class App extends Component {
             console.log('=== instanceProject ===', instanceProject);
           }
         }
-        if (instance || instanceWallet || instanceProject) {
+        if (OrganizationToken.networks) {
+          deployedNetwork = OrganizationToken.networks[networkId.toString()];
+          if (deployedNetwork) {
+            instanceOrganizationToken = new web3.eth.Contract(
+              OrganizationToken.abi,
+              deployedNetwork && deployedNetwork.address,
+            );
+            console.log('=== instanceOrganizationToken ===', instanceOrganizationToken);
+          }
+        }
+        if (instance || instanceWallet || instanceProject || instanceOrganizationToken) {
           // Set web3, accounts, and contract to the state, and then proceed with an
           // example of interacting with the contract's methods.
           this.setState({ web3, ganacheAccounts, accounts, balance, networkId, networkType, hotLoaderDisabled,
-            isMetaMask, contract: instance, wallet: instanceWallet, project: instanceProject }, () => {
-              this.refreshValues(instance, instanceWallet, instanceProject);
+            isMetaMask, contract: instance, wallet: instanceWallet, project: instanceProject, organization_token: instanceOrganizationToken }, () => {
+              this.refreshValues(instance, instanceWallet, instanceProject, instanceOrganizationToken);
               setInterval(() => {
-                this.refreshValues(instance, instanceWallet, instanceProject);
+                this.refreshValues(instance, instanceWallet, instanceProject, instanceOrganizationToken);
               }, 5000);
             });
         }
@@ -423,7 +492,7 @@ class App extends Component {
     }
   }
 
-  refreshValues = (instance, instanceWallet, instanceProject) => {
+  refreshValues = (instance, instanceWallet, instanceProject, instanceOrganizationToken) => {
     if (instance) {
       this.getCount();
     }
@@ -432,6 +501,9 @@ class App extends Component {
     }
     if (instanceProject) {
       console.log('Title');
+    }
+    if (instanceOrganizationToken) {
+      console.log('refreshValues of instanceOrganizationToken');
     }
   }
 
@@ -645,7 +717,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, budget, asking_price_of_budget, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status, adopt_status_list, budget_list, asking_price_of_budget_list } = this.state;
+    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, budget, asking_price_of_budget, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status, adopt_status_list, budget_list, asking_price_of_budget_list, total_supply, balance_of } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -787,6 +859,54 @@ class App extends Component {
               {voting_status}
             </Card>
           </div>
+
+
+
+          <h1>OrganaizationToken Contract is good to Go!</h1>
+
+          <Card width={'420px'} bg="primary">
+            <div className={styles.widgets}>
+              <p>Total Supply</p>
+
+              <Button onClick={this.getTotalSupply}>Get Total Supply</Button>
+
+              <br />
+
+              {total_supply}
+            </div>
+          </Card>
+
+          <Card width={'420px'} bg="primary">
+            <div className={styles.widgets}>
+              <p>Balance</p>
+
+              <Button onClick={this.getBalanceOf}>Get Balance</Button>
+
+              {balance_of}
+            </div>
+          </Card>
+
+          <Card width={'420px'} bg="primary">
+            <div className={styles.widgets}>
+              <p>Mint Token</p> 
+
+              <p>To</p>
+              <Input type="text" value={this.state.valueOfMintBy} onChange={this.handleInputMintBy} />
+
+              <p>Value of minting token</p>
+              <Input type="text" value={this.state.valueOfMintToken} onChange={this.handleInputMintToken} />
+
+              <Button onClick={this.sendMintToken}>Mint Token</Button>
+            </div>
+          </Card>
+
+          <Card width={'420px'} bg="primary">
+            <div className={styles.widgets}>
+              <p>Burn Token</p>
+
+              <Button onClick={this.sendBurnToken}>Burn Token</Button>
+            </div>
+          </Card>
         </div>
       )}
       </div>
