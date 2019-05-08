@@ -202,6 +202,14 @@ contract Propose is Initializable {
         return _tokenFromAskingPrice;
     }
     
+
+    function budgetStatus(uint256 _proposalId) view public returns(uint256 budget_status) {
+        Budget storage budget = proposals[_proposalId].budgets[_proposalId];
+        budget_status = budget.budget;
+        
+        return budget_status;
+    }
+    
  
 
 

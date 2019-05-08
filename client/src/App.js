@@ -261,6 +261,7 @@ class App extends Component {
       proposal_title: valueOfProposalTitle,
       proposal_content: valueOfProposalContent,
       proposal_voting_count: valueOfProposalVotingCount,
+      budget: quantityOfProvidedToken,
       asking_price_of_budget: valueOfAskingPriceOfBudget,
 
       valueOfProposalBy: '',
@@ -281,12 +282,12 @@ class App extends Component {
     this.setState({ proposal_voting_count_list: this.state.proposal_voting_count_list });
     this.state.adopt_status_list.push(this.state.adopt_status);
     this.setState({ adopt_status_list: this.state.adopt_status_list });
-    //this.state.budget_list.push(response_3.events.CreateAskingPriceOfBudget.returnValues.budget);
-    //this.setState({ budget_list: this.state.budget_list });
+    this.state.budget_list.push(quantityOfProvidedToken);
+    this.setState({ budget_list: this.state.budget_list });
     this.state.asking_price_of_budget_list.push(response_3.events.CreateAskingPriceOfBudget.returnValues.askingPriceOfBudget);
     this.setState({ asking_price_of_budget_list: this.state.asking_price_of_budget_list });
   }
-
+  
 
   handleInputNewVoting({ target: { value } }) {
     this.setState({ valueOfNewVotingProposerId: Number(value) });
@@ -928,12 +929,18 @@ class App extends Component {
               <h3>Proposer of Proposal</h3><br />
               <p>{ proposal_by }</p>
 
-              <h3>Asking Price</h3><br />
+              <h3>Asking Price of Token</h3><br />
               <p>{ asking_price_of_budget }</p>
 
-              <h3>Minted Token</h3><br />
-              <p>{ asking_price_of_budget }</p>
+              <h3>Provided Token</h3><br />
+              <p>{ budget }</p>
+            </div>
+            <div>
+              <hr />
+              <p>Budget Status</p>
+              <Input type="text" value={this.state.valueOfBudgetStatus} onChange={this.handleInputBudgetStatus} />
 
+              <Button onClick={this.callBudgetStatus}>Get Budget Status</Button>              
             </div>
           </Card>
         </div>
