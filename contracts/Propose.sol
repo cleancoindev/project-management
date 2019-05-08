@@ -216,8 +216,11 @@ contract Propose is Initializable {
         uint256 _proposalId, 
         //string _purpose,
         uint256 _budgetNeeded
-    ) public returns(uint256 currentBudget, uint256 remainingBudget) 
+    ) public returns(uint256) 
     {
+        uint256 currentBudget;
+        uint256 remainingBudget;
+
         Budget storage budget = proposals[_proposalId].budgets[_proposalId];
         currentBudget = budget.budget;
         remainingBudget = currentBudget - _budgetNeeded;
@@ -225,7 +228,7 @@ contract Propose is Initializable {
         // Save value of remaining buget
         budget.budget = remainingBudget;
 
-        return (currentBudget, remainingBudget);
+        return remainingBudget;
     }
 
     /* @notice Get proposerId */
