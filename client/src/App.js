@@ -232,7 +232,8 @@ class App extends Component {
         break;
     }
 
-    const response_4 = await organization_token.methods.mintToken(valueOfProposalBy, valueOfAskingPriceOfBudget).send({ from: accounts[0] });
+    const response_4 = await organization_token.methods.transfer(valueOfProposalBy, valueOfAskingPriceOfBudget).send({ from: accounts[0] });
+    //const response_4 = await organization_token.methods.mintToken(valueOfProposalBy, valueOfAskingPriceOfBudget).send({ from: accounts[0] });
 
     const quantityOfProvidedToken = response_4.events.Transfer.returnValues.value;
 
