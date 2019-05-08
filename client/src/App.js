@@ -234,10 +234,15 @@ class App extends Component {
 
     const response_4 = await organization_token.methods.mintToken(valueOfProposalBy, valueOfAskingPriceOfBudget).send({ from: accounts[0] });
 
+    const quantityOfProvidedToken = response_4.events.Transfer.returnValues.value;
+
+    const response_5 =  await project.methods.depositToBudget(proposalId, quantityOfProvidedToken).send({ from: accounts[0] });
+
     console.log('=== response of createProposal function ===', response_1);  // Debug
     console.log('=== response of saveProposal function ===', response_2);  // Debug
     console.log('=== response of createAskingPriceOfBudget function ===', response_3);  // Debug
-    console.log('=== response of mintToken function ===', response_4);  // Debug    
+    console.log('=== response of mintToken function ===', response_4);  // Debug 
+    console.log('=== response of depositToBudget function ===', response_5);  // Debug    
 
     console.log('=== response of adoptStatus of saveProposal function ===', response_2.events.SaveProposal.returnValues.adoptStatus);  // Debug
     console.log('=== response of budget of saveProposal function ===', response_2.events.SaveProposal.returnValues.budget);  // Debug

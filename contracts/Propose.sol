@@ -49,6 +49,7 @@ contract Propose is Initializable {
     );
     
     event CreateAskingPriceOfBudget (uint256 indexed askingPriceOfBudget);
+    event DepositToBudget (uint256 indexed tokenFromAskingPrice);
     
 
 
@@ -131,7 +132,6 @@ contract Propose is Initializable {
     ) public returns (address, string memory, string memory, uint256, bool) 
     {
         bool _adoptStatus = false; // Default value is NotAdopt 
-        uint256 _budget = 0;       // Default value is 0
 
         Proposal memory proposal = Proposal({
             proposalBy: _proposalBy,
@@ -192,6 +192,16 @@ contract Propose is Initializable {
         return (_askingPriceOfBudget);
     }
 
+
+    function depositToBudget(uint256 _proposalId, uint256 _tokenFromAskingPrice) public returns (uint) {
+        Budget storage budget = proposals[_proposalId].budgets[_proposalId];
+        budget.budget = _tokenFromAskingPrice;
+
+        emit DepositToBudget(_tokenFromAskingPrice);
+
+        return _tokenFromAskingPrice;
+    }
+    
  
 
 
