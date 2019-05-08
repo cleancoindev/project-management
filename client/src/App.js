@@ -213,7 +213,7 @@ class App extends Component {
   }
 
   sendCreateProposal = async (_proposalBy, _proposalTitle, _proposalContent, _votingCountOfProposal, _askingPriceOfBudget) => {
-    const { project, accounts, proposal_by, proposal_title, proposal_content, valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent, valueOfProposalVotingCount, valueOfAskingPriceOfBudget } = this.state;
+    const { project, organization_token, accounts, proposal_by, proposal_title, proposal_content, valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent, valueOfProposalVotingCount, valueOfAskingPriceOfBudget } = this.state;
 
     const response_1 = await project.methods.createProposal(valueOfProposalBy, valueOfProposalTitle, valueOfProposalContent, valueOfProposalVotingCount).send({ from: accounts[0] })
 
@@ -221,7 +221,7 @@ class App extends Component {
         
     const response_2 = await project.methods.saveProposal(proposalId).send({ from: accounts[0] });
 
-    const response_3 =  await project.methods.createAskingPriceOfBudget(proposalId, valueOfAskingPriceOfBudget).send({ from: accounts[0] });   
+    const response_3 =  await project.methods.createAskingPriceOfBudget(proposalId, valueOfAskingPriceOfBudget).send({ from: accounts[0] });
 
     switch(response_2.events.SaveProposal.returnValues.adoptStatus) {
       case true:
@@ -232,9 +232,12 @@ class App extends Component {
         break;
     }
 
+    const response_4 = await organization_token.methods.mintToken(valueOfProposalBy, valueOfAskingPriceOfBudget).send({ from: accounts[0] });
+
     console.log('=== response of createProposal function ===', response_1);  // Debug
     console.log('=== response of saveProposal function ===', response_2);  // Debug
     console.log('=== response of createAskingPriceOfBudget function ===', response_3);  // Debug
+    console.log('=== response of mintToken function ===', response_4);  // Debug    
 
     console.log('=== response of adoptStatus of saveProposal function ===', response_2.events.SaveProposal.returnValues.adoptStatus);  // Debug
     console.log('=== response of budget of saveProposal function ===', response_2.events.SaveProposal.returnValues.budget);  // Debug
@@ -372,6 +375,12 @@ class App extends Component {
 
 
 
+
+
+
+  //////////////////////////////////// 
+  ///// Ganache
+  ////////////////////////////////////
   getGanacheAddresses = async () => {
     if (!this.ganacheProvider) {
       this.ganacheProvider = getGanacheWeb3();
@@ -717,7 +726,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, budget, asking_price_of_budget, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status, adopt_status_list, budget_list, asking_price_of_budget_list, total_supply, balance_of } = this.state;
+    const { project, organization_token, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, budget, asking_price_of_budget, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status, adopt_status_list, budget_list, asking_price_of_budget_list, total_supply, balance_of } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -905,6 +914,20 @@ class App extends Component {
               <p>Burn Token</p>
 
               <Button onClick={this.sendBurnToken}>Burn Token</Button>
+            </div>
+          </Card>
+
+          <Card width={'420px'} bg="primary">
+            <div className={styles.widgets}>
+              <h3>Proposer of Proposal</h3><br />
+              <p>{ proposal_by }</p>
+
+              <h3>Asking Price</h3><br />
+              <p>{ asking_price_of_budget }</p>
+
+              <h3>Minted Token</h3><br />
+              <p>{ asking_price_of_budget }</p>
+
             </div>
           </Card>
         </div>
