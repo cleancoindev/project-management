@@ -8,7 +8,7 @@ import CounterUI from "./components/Counter/index.js";
 import Wallet from "./components/Wallet/index.js";
 import Project from "./components/Project/index.js";  // Load Project components
 import Instructions from "./components/Instructions/index.js";
-import { Loader, Button, Card, Input } from 'rimble-ui';
+import { Loader, Button, Card, Input, Heading } from 'rimble-ui';
 
 import { zeppelinSolidityHotLoaderOptions } from '../config/webpack';
 
@@ -287,7 +287,7 @@ class App extends Component {
     this.state.asking_price_of_budget_list.push(response_3.events.CreateAskingPriceOfBudget.returnValues.askingPriceOfBudget);
     this.setState({ asking_price_of_budget_list: this.state.asking_price_of_budget_list });
   }
-  
+
 
   handleInputNewVoting({ target: { value } }) {
     this.setState({ valueOfNewVotingProposerId: Number(value) });
@@ -942,6 +942,44 @@ class App extends Component {
 
               <Button onClick={this.callBudgetStatus}>Get Budget Status</Button>              
             </div>
+          </Card>
+
+          <Card width={'420px'} bg="primary">
+            <Heading.h2>Using budget</Heading.h2>
+
+            <div className={styles.widgets}>
+              <h3>Who does it execute? (executer's address)</h3><br />
+              <Input type="text" value={this.state.valueOfBudgetStatus} onChange={this.handleInputBudgetStatus} />
+            </div>
+
+            <hr / >
+
+            <div className={styles.widgets}>
+              <h3>Which Proposal? (Proposal Id)</h3><br />
+              <Input type="text" value={this.state.valueOfBudgetStatus} onChange={this.handleInputBudgetStatus} />
+            </div>
+
+            <hr />
+
+            <div className={styles.widgets}>
+              <h3>What is purpose?</h3><br />
+              <Input type="text" value={this.state.valueOfBudgetStatus} onChange={this.handleInputBudgetStatus} />
+            </div>
+
+            <hr />
+
+            <div className={styles.widgets}>
+              <h3>How much do you need Token（OZT）of budget?</h3><br />
+              <Input type="text" value={this.state.valueOfBudgetStatus} onChange={this.handleInputBudgetStatus} />
+            </div>
+
+            <hr />
+
+            <div className={styles.widgets}>
+              <h3>Remaining budget of this proposal</h3>
+              <p>*** Here is Circle Graph in future ***</p>
+            </div>
+
           </Card>
         </div>
       )}

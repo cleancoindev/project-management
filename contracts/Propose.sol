@@ -210,8 +210,6 @@ contract Propose is Initializable {
         return budget_status;
     }
     
- 
-
 
     /* @notice Get proposerId */
     function getProposerId() public view returns (uint256 _proposerId) {
