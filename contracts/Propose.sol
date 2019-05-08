@@ -211,6 +211,23 @@ contract Propose is Initializable {
     }
     
 
+    function usingBudget(
+        //address _executer, 
+        uint256 _proposalId, 
+        //string _purpose,
+        uint256 _budgetNeeded
+    ) public returns(uint256 currentBudget, uint256 remainingBudget) 
+    {
+        Budget storage budget = proposals[_proposalId].budgets[_proposalId];
+        currentBudget = budget.budget;
+        remainingBudget = currentBudget - _budgetNeeded;
+
+        // Save value of remaining buget
+        budget.budget = remainingBudget;
+
+        return (currentBudget, remainingBudget);
+    }
+
     /* @notice Get proposerId */
     function getProposerId() public view returns (uint256 _proposerId) {
         return proposers.length - 1;
