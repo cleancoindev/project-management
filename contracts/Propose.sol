@@ -2,9 +2,12 @@ pragma solidity ^0.5.0;
 
 // import "openzeppelin-eth/contracts/ownership/Ownable.sol";
 import "zos-lib/contracts/Initializable.sol";
+import "openzeppelin-solidity-2.1.1/contracts/math/SafeMath.sol";
 
 
 contract Propose is Initializable {
+
+    using SafeMath for uint256;
 
     //uint256 public proposerId;
     //uint256 public proposalId;
@@ -225,7 +228,8 @@ contract Propose is Initializable {
 
         Budget storage budget = proposals[_proposalId].budgets[_proposalId];
         currentBudget = budget.budget;
-        remainingBudget = currentBudget - _budgetNeeded;
+        remainingBudget = currentBudget.sub(_budgetNeeded);
+        //remainingBudget = currentBudget - _budgetNeeded;
 
         // Save value of remaining buget
         budget.budget = remainingBudget;
