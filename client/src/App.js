@@ -83,6 +83,7 @@ class App extends Component {
       token_of_using_budget: '',
       valueOfProposalIdOfUsingBudget: '',
       valueOfTokenOfUsingBudget: '',
+      remaining_budget: 0,
 
       ////// newVoting
       new_voting_proposal_id: 0,
@@ -319,6 +320,15 @@ class App extends Component {
       valueOfProposalIdOfUsingBudget: 0,
       valueOfTokenOfUsingBudget: 0,
     });
+
+
+    const event = response.events.UsingBudget.returnValues.remainingBudget
+    console.log('=== remainingBudget ===', event);  // Debug
+
+    this.setState({
+      remaining_budget: event
+    });
+
   }
 
 
@@ -766,7 +776,7 @@ class App extends Component {
   }
 
   renderProject() {
-    const { project, organization_token, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, budget, asking_price_of_budget, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status, adopt_status_list, budget_list, asking_price_of_budget_list, total_supply, balance_of } = this.state;
+    const { project, organization_token, number_of_total_proposer, proposer_name, proposer_address, proposal_by, proposal_title, proposal_content, proposal_voting_count, adopt_status, budget, asking_price_of_budget, remaining_budget, proposer_name_list, proposer_address_list, proposer_id, proposer_name_call, proposer_address_call, proposal_by_list, proposal_title_list, proposal_content_list, proposal_voting_count_list, voting_status, adopt_status_list, budget_list, asking_price_of_budget_list, total_supply, balance_of } = this.state;
 
     return (
       <div className={styles.wrapper}>
@@ -1012,7 +1022,7 @@ class App extends Component {
 
             <div className={styles.widgets}>
               <h3>Remaining budget of this proposal</h3>
-              <p>*** Here is Circle Graph in future ***</p>
+              <p>{ remaining_budget }</p>
             </div>
 
           </Card>
