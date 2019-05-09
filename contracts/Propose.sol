@@ -50,6 +50,8 @@ contract Propose is Initializable {
     
     event CreateAskingPriceOfBudget (uint256 indexed askingPriceOfBudget);
     event DepositToBudget (uint256 indexed tokenFromAskingPrice);
+    event UsingBudget (uint256 indexed remainingBudget);
+    //event UsingBudget (uint256 currentBudget, uint256 budgetNeeded, uint256 indexed remainingBudget);
     
 
 
@@ -228,8 +230,13 @@ contract Propose is Initializable {
         // Save value of remaining buget
         budget.budget = remainingBudget;
 
+        emit UsingBudget (remainingBudget);
+        //emit UsingBudget (currentBudget, _budgetNeeded, remainingBudget);
+
         return remainingBudget;
+        //return (currentBudget, _budgetNeeded, remainingBudget);
     }
+
 
     /* @notice Get proposerId */
     function getProposerId() public view returns (uint256 _proposerId) {

@@ -78,6 +78,12 @@ class App extends Component {
       budget_list: [],
       asking_price_of_budget_list: [],
 
+      ////// Using Budget
+      proposal_id_of_using_budget: '',
+      token_of_using_budget: '',
+      valueOfProposalIdOfUsingBudget: '',
+      valueOfTokenOfUsingBudget: '',
+
       ////// newVoting
       new_voting_proposal_id: 0,
       valueOfNewVotingProposerId: 0,
@@ -107,6 +113,9 @@ class App extends Component {
     this.handleInputAskingPriceOfBudget = this.handleInputAskingPriceOfBudget.bind(this);
     this.sendCreateProposal = this.sendCreateProposal.bind(this);
 
+    this.handleInputProposalIdOfUsingBudget = this.handleInputProposalIdOfUsingBudget.bind(this);    
+    this.handleInputTokenOfUsingBudget = this.handleInputTokenOfUsingBudget.bind(this);
+
     this.handleInputNewVoting = this.handleInputNewVoting.bind(this);
     this.sendNewVoting = this.sendNewVoting.bind(this);
 
@@ -116,6 +125,7 @@ class App extends Component {
     this.handleInputMintBy = this.handleInputMintBy.bind(this);
     this.handleInputMintToken = this.handleInputMintToken.bind(this);
   }
+
 
 
   ////// New
@@ -286,6 +296,29 @@ class App extends Component {
     this.setState({ budget_list: this.state.budget_list });
     this.state.asking_price_of_budget_list.push(response_3.events.CreateAskingPriceOfBudget.returnValues.askingPriceOfBudget);
     this.setState({ asking_price_of_budget_list: this.state.asking_price_of_budget_list });
+  }
+
+
+  handleInputProposalIdOfUsingBudget({ target: { value } }) {
+    this.setState({ valueOfProposalIdOfUsingBudget: Number(value) });
+  }
+
+  handleInputTokenOfUsingBudget({ target: { value } }) {
+    this.setState({ valueOfTokenOfUsingBudget: Number(value) });
+  }
+
+  sendUsingBudget = async (_proposalId, _budgetNeeded) => {
+    const { project, accounts, proposal_id_of_using_budget, token_of_using_budget, valueOfProposalIdOfUsingBudget, valueOfTokenOfUsingBudget } = this.state;
+    
+    const response = await project.methods.usingBudget(valueOfProposalIdOfUsingBudget, valueOfTokenOfUsingBudget).send({ from: accounts[0] });
+    console.log('=== response of usingBudget function ===', response);  // Debug
+
+    this.setState({
+      proposal_id_of_using_budget: Number(valueOfProposalIdOfUsingBudget),
+      token_of_using_budget: Number(valueOfTokenOfUsingBudget),
+      valueOfProposalIdOfUsingBudget: 0,
+      valueOfTokenOfUsingBudget: 0,
+    });
   }
 
 
@@ -952,13 +985,6 @@ class App extends Component {
               <Input type="text" value={this.state.valueOfBudgetStatus} onChange={this.handleInputBudgetStatus} />
             </div>
 
-            <hr / >
-
-            <div className={styles.widgets}>
-              <h3>Which Proposal? (Proposal Id)</h3><br />
-              <Input type="text" value={this.state.valueOfBudgetStatus} onChange={this.handleInputBudgetStatus} />
-            </div>
-
             <hr />
 
             <div className={styles.widgets}>
@@ -966,12 +992,21 @@ class App extends Component {
               <Input type="text" value={this.state.valueOfBudgetStatus} onChange={this.handleInputBudgetStatus} />
             </div>
 
+            <hr / >
+
+            <div className={styles.widgets}>
+              <h3>Which Proposal? (Proposal Id)</h3><br />
+              <Input type="text" value={this.state.valueOfProposalIdOfUsingBudget} onChange={this.handleInputProposalIdOfUsingBudget} />
+            </div>
+
             <hr />
 
             <div className={styles.widgets}>
               <h3>How much do you need Token（OZT）of budget?</h3><br />
-              <Input type="text" value={this.state.valueOfBudgetStatus} onChange={this.handleInputBudgetStatus} />
+              <Input type="text" value={this.state.valueOfTokenOfUsingBudget} onChange={this.handleInputTokenOfUsingBudget} />
             </div>
+
+            <Button onClick={this.sendUsingBudget}>Send Using Budget</Button>              
 
             <hr />
 
