@@ -55,7 +55,6 @@ contract Propose is Initializable {
     event DepositToBudget (uint256 indexed tokenFromAskingPrice);
     event UsingBudget (uint256 indexed remainingBudget);
     //event UsingBudget (uint256 currentBudget, uint256 budgetNeeded, uint256 indexed remainingBudget);
-    
 
 
     //it keeps a count to demonstrate stage changes
@@ -177,6 +176,29 @@ contract Propose is Initializable {
 
         return true;
     }
+
+
+    /* @notice Index of all of proposals */
+    function indexProposals() public view returns(uint[] memory) {
+        uint[] memory result = new uint[](proposals.length);
+        uint counter = 0;
+
+        address a;
+
+        for (uint i = 0; i < proposals.length; i++) {
+            Proposal memory proposal = proposals[i];
+            a = proposals[i].proposalBy;
+
+            result[counter] = i;
+            counter++;
+
+            //result.push(a);  // In case it define variable by memory, we can't push
+        }
+
+        return result;
+    }
+    
+
 
 
     /* @notice Create new asking price of budget */ 
